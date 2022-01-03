@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Elisa_ProductApi::products" title="Elisa API - Products"
+                          translate="title" sortOrder="110">
+                    <resource id="Elisa_ProductApi::products_by_timestamp" title="Get products by timestamp"
+                              translate="title" sortOrder="10" />
+                    <resource id="Elisa_ProductApi::cart_create" title="Custom cart create"
+                              translate="title" sortOrder="20" />
+                    <resource id="Elisa_ProductApi::get_orders" title="Get orders by timestamp"
+                              translate="title" sortOrder="30" />
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

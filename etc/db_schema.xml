@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="elisa_productsapi_cartrequest" resource="default" engine="innodb"
+           comment="Cart create requests">
+        <column xsi:type="int" name="id" unsigned="false" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="varchar" name="ref_id" nullable="false" comment="Token"/>
+        <column xsi:type="text" name="cart_data" nullable="true" comment="Cart Data"/>
+        <column xsi:type="int" name="usages" nullable="false" comment="Usages"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="elisa_productsapi_cartrequest_to_quote" resource="default" engine="innodb"
+           comment="Cart create requests to quote">
+        <column xsi:type="int" name="id" unsigned="false" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="ref_id" nullable="true" comment="Cart Data"/>
+        <column xsi:type="int" name="quote_id" nullable="true" comment="Cart Data"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+</schema>

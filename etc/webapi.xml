@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/elisa_products/:timestamp/:page" method="GET">
+        <service class="Elisa\ProductApi\Api\Data\ProductApiInterface" method="getList"/>
+        <resources>
+            <resource ref="Elisa_ProductApi::products_by_timestamp" />
+        </resources>
+    </route>
+    <route url="/V1/elisa_cart/" method="POST">
+        <service class="Elisa\ProductApi\Api\Data\CartApiInterface" method="cartCreate"/>
+        <resources>
+            <resource ref="Elisa_ProductApi::cart_create" />
+        </resources>
+    </route>
+    <route url="/V1/elisa_order/:timestamp/" method="GET">
+        <service class="Elisa\ProductApi\Api\Data\OrderApiInterface" method="getOrders"/>
+        <resources>
+            <resource ref="Elisa_ProductApi::get_orders" />
+        </resources>
+    </route>
+</routes>

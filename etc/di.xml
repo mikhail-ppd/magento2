@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Elisa\ProductApi\Api\Data\ProductApiInterface" type="Elisa\ProductApi\Model\ProductApi"/>
+    <preference for="Elisa\ProductApi\Api\Data\CartApiInterface" type="Elisa\ProductApi\Model\CartApi"/>
+    <preference for="Elisa\ProductApi\Api\Data\OrderApiInterface" type="Elisa\ProductApi\Model\OrderApi"/>
+</config>
