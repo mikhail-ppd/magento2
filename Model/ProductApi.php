@@ -150,9 +150,8 @@ class ProductApi implements ProductApiInterface
             $updatedAt = date("Y-m-d H:i:s", 0);
         }
 
-        $productsCollection = $this->productsCollectionFactory->create()
-            ->setPageSize(self::MAX_PRODUCTS_COUNT)
-            ->setCurPage($page);
+        $productsCollection = $this->productsCollectionFactory->create();
+
         $productIds = [];
         if ($timestamp) {
             $orderItemsCollection = $this->orderItemsCollectionFactory->create();
@@ -160,24 +159,28 @@ class ProductApi implements ProductApiInterface
             $orderItemsCollection->addFieldToFilter('created_at', ['gt' => $updatedAt]);
             $productIds = $orderItemsCollection->getColumnValues('product_id');
             $productsCollection->getSelect()->group('e.entity_id');
-        }
+            $whereCond = "e.updated_at > '".$updatedAt."' ";
+            if (!empty($productIds)) {
+                $whereCond .= " OR e.entity_id IN (".implode(',', $productIds).") ";
+            }
+            $productsCollection
+                ->getSelect()
+                ->where($whereCond);
+        } else {
+            $productsCollection
+                ->setPageSize(self::MAX_PRODUCTS_COUNT)
+                ->setCurPage($page);
+      }
 
         $productsCollection->addAttributeToSelect('*');
         $productsCollection->joinAttribute('status', 'catalog_product/status', 'entity_id', null, 'inner');
         $productsCollection->joinAttribute('visibility', 'catalog_product/visibility', 'entity_id', null, 'inner');
 
-        $whereCond = "e.updated_at > '".$updatedAt."' ";
+        $productsCollection->load();
 
-        if (!empty($productIds)) {
-            $whereCond .= " OR e.entity_id IN (".implode(',', $productIds).") ";
-        }
-        $productsCollection->getSelect()
-            ->where($whereCond)
-            ->group('e.entity_id');
 
         $this->joinProcessor->process($productsCollection);
         $productsCollection->load();
-
 
         $items = $productsCollection->getItems();
         $searchResult = $this->productSearchResultsInterfaceFactory->create();
@@ -266,7 +269,7 @@ class ProductApi implements ProductApiInterface
                 ->from($reservationTable, [ReservationInterface::QUANTITY => 'SUM(' . ReservationInterface::QUANTITY . ')'])
                 ->where(ReservationInterface::SKU . ' = ?', $product->getSku());
             $reservations = $connection->fetchOne($reservationSelect);
-            
+
             $productData['stock']['qtyReserved'] = $reservations;
 
         }
