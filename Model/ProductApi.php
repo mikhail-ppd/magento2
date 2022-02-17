@@ -176,9 +176,6 @@ class ProductApi implements ProductApiInterface
         $productsCollection->joinAttribute('status', 'catalog_product/status', 'entity_id', null, 'inner');
         $productsCollection->joinAttribute('visibility', 'catalog_product/visibility', 'entity_id', null, 'inner');
 
-        $productsCollection->load();
-
-
         $this->joinProcessor->process($productsCollection);
         $productsCollection->load();
 
