@@ -135,6 +135,7 @@ class CartRequest extends AbstractModel implements IdentityInterface
         $requestDataSerialized = $this->getCartData();
         $quoteData = $this->serializer->unserialize($requestDataSerialized);
         if (isset($quoteData['products'])) {
+            $this->cart->truncate();
             $store = $this->storeManager->getStore();
             foreach ($quoteData['products'] as $productData) {
                 if (isset($productData['sku'])) {
