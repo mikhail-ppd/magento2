@@ -27,11 +27,11 @@ class OrderApi implements OrderApiInterface
         $ordersCollection = $this->ordersCollectionFactory->create();
         $ordersCollection->getSelect()->joinLeft(
             ['crq' => 'elisa_productsapi_cartrequest_to_quote'],
-            "main_table.quote_id = crq.quote_id",
+            "main_table.quote_id = crq.quote_id"
         );
         $ordersCollection->getSelect()->joinLeft(
             ['cr' => 'elisa_productsapi_cartrequest'],
-            "crq.ref_id = cr.id",
+            "crq.ref_id = cr.id"
         );
         if ($timestamp) {
             $createdAt = date("Y-m-d H:i:s", $timestamp);
