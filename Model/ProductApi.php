@@ -240,11 +240,12 @@ class ProductApi implements ProductApiInterface
             'entity_id' => $product->getId(),
             'sku' => $product->getSku(),
             'name' => $product->getName(),
-            'price' => $product->getPrice(),
+            'price' => $product->getFinalPrice(),
+            'suggestedRetailPrice'  => $product->getPrice(),
             'url' => $product->getProductUrl(),
             'type_id' => $product->getTypeId(),
-            'status' => $product->getAttributeText('status'),
-            'visibility' => $product->getAttributeText('visibility')
+            'status' => $product->getStatus(),
+            'visibility' => $product->getVisibility()
         ];
 
         $storeId = $this->storeManager->getStore()->getId();
