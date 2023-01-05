@@ -1,0 +1,42 @@
+{
+    "elisa_productsapi_cartrequest": {
+        "column": {
+            "id": true,
+            "ref_id": true,
+            "cart_data": true,
+            "usages": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "ELISA_PRODUCTSAPI_CARTREQUEST_REF_ID": true
+        }
+    },
+    "elisa_productsapi_cartrequest_to_quote": {
+        "column": {
+            "id": true,
+            "ref_id": true,
+            "quote_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "ELISA_PRODUCTSAPI_CARTREQUEST_TO_QUOTE_QUOTE_ID_REF_ID": true,
+            "ELISA_PRODUCTSAPI_CARTREQUEST_TO_QUOTE_REF_ID": true
+        }
+    },
+    "elisa_productsapi_product_tracker": {
+        "column": {
+            "product_id": true,
+            "updated_utc_timestamp": true
+        },
+        "index": {
+            "ELISA_PRDSAPI_PRD_TRACKER_UPDATED_UTC_TIMESTAMP_PRD_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

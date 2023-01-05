@@ -1,21 +1,39 @@
 <?xml version="1.0" ?>
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <route url="/V1/elisa_products/:timestamp/:page" method="GET">
-        <service class="Elisa\ProductApi\Api\Data\ProductApiInterface" method="getList"/>
-        <resources>
-            <resource ref="Elisa_ProductApi::products_by_timestamp" />
-        </resources>
-    </route>
-    <route url="/V1/elisa_cart/" method="POST">
-        <service class="Elisa\ProductApi\Api\Data\CartApiInterface" method="cartCreate"/>
+    <route url="/V1/elisa/cart/" method="POST">
+        <service class="Elisa\ProductApi\Api\CartManagementInterface" method="getCreateUrl"/>
         <resources>
             <resource ref="Elisa_ProductApi::cart_create" />
         </resources>
     </route>
-    <route url="/V1/elisa_order/:timestamp/" method="GET">
-        <service class="Elisa\ProductApi\Api\Data\OrderApiInterface" method="getOrders"/>
+    <route url="/V1/elisa/order/:timestamp/" method="GET">
+        <service class="Elisa\ProductApi\Api\OrderManagementInterface" method="getList"/>
         <resources>
             <resource ref="Elisa_ProductApi::get_orders" />
+        </resources>
+    </route>
+    <route url="/V1/elisa/products/delta/:timestamp" method="GET">
+        <service class="Elisa\ProductApi\Api\ProductManagementInterface" method="getDeltaList"/>
+        <resources>
+            <resource ref="Elisa_ProductApi::products_by_timestamp" />
+        </resources>
+    </route>
+    <route url="/V1/elisa/products/:page" method="GET">
+        <service class="Elisa\ProductApi\Api\ProductManagementInterface" method="getList"/>
+        <resources>
+            <resource ref="Elisa_ProductApi::products_by_timestamp" />
+        </resources>
+    </route>
+    <route url="/V1/elisa/products/:pageSize/:page" method="GET">
+        <service class="Elisa\ProductApi\Api\ProductManagementInterface" method="getList"/>
+        <resources>
+            <resource ref="Elisa_ProductApi::products_by_timestamp" />
+        </resources>
+    </route>
+    <route url="/V1/elisa/version" method="GET">
+        <service class="Elisa\ProductApi\Api\IntegrationManagementInterface" method="getVersionInfo"/>
+        <resources>
+            <resource ref="Elisa_ProductApi::products" />
         </resources>
     </route>
 </routes>

@@ -5,17 +5,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class RequestToQuote extends AbstractDb
 {
-
-    public function __construct(
-        \Magento\Framework\Model\ResourceModel\Db\Context $context
-    )
-    {
-        parent::__construct($context);
-    }
-
+    /**
+     * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     */
     protected function _construct()
     {
         $this->_init('elisa_productsapi_cartrequest_to_quote', 'id');
     }
-
 }
