@@ -13,8 +13,6 @@ use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
 use Magento\Framework\UrlInterface;
 use Elisa\ProductApi\Model\ResourceModel\CartRequest as CartRequestResource;
 use Elisa\ProductApi\Model\ResourceModel\RequestToQuote as RequestToQuoteResource;
-use Elisa\ProductApi\Model\CartRequestFactory;
-use Elisa\ProductApi\Model\RequestToQuoteFactory;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Store\Model\StoreManagerInterface;

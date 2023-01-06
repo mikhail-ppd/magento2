@@ -2,10 +2,10 @@
 
 namespace Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup;
 
-use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabelInterface;
+use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionValueInterface;
 use Magento\Framework\DataObject;
 
-class ValueLabel extends DataObject implements ValueLabelInterface
+class OptionValue extends DataObject implements OptionValueInterface
 {
     private const KEY_LABEL = 'label';
     private const KEY_VALUE = 'value';
@@ -29,7 +29,7 @@ class ValueLabel extends DataObject implements ValueLabelInterface
     /**
      * @inheritDoc
      */
-    public function setLabel(string $value): ValueLabelInterface
+    public function setLabel(string $value): OptionValueInterface
     {
         return $this->setData(self::KEY_LABEL, $value);
     }
@@ -37,7 +37,7 @@ class ValueLabel extends DataObject implements ValueLabelInterface
     /**
      * @inheritDoc
      */
-    public function setValue(int $value): ValueLabelInterface
+    public function setValue(int $value): OptionValueInterface
     {
         return $this->setData(self::KEY_VALUE, $value);
     }

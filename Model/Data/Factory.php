@@ -4,10 +4,10 @@ namespace Elisa\ProductApi\Model\Data;
 
 use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableOptionInterface as ConfigurableOption;
 use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableOptionInterfaceFactory as ConfigurableOptionFactory;
-use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabelInterface as ConfValueLabel;
-use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabelInterfaceFactory as ConfValueLabelFactory;
-use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabelMapInterface as ConfValueLabelMap;
-use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabelMapInterfaceFactory as ConfValueLabelMapFactory;
+use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionInterface as ConfSetupOption;
+use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionInterfaceFactory as ConfSetupOptionFactory;
+use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionValueInterface as ConfSetupOptionValue;
+use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionValueInterfaceFactory as ConfSetupOptionValueFactory;
 use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetupInterface as ConfigurableSetup;
 use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetupInterfaceFactory as ConfigurableSetupFactory;
 use Elisa\ProductApi\Api\Data\ElisaProduct\ProductDataInterface as ProductData;
@@ -25,10 +25,10 @@ use Elisa\ProductApi\Api\Data\ElisaProductInterfaceFactory as ElisaProductFactor
  */
 class Factory
 {
-    /** @var ConfValueLabelFactory */
-    protected $confValueLabelFactory;
-    /** @var ConfValueLabelMapFactory */
-    protected $confValueLabelMapFactory;
+    /** @var ConfSetupOptionFactory */
+    protected $confSetupOptionFactory;
+    /** @var ConfSetupOptionValueFactory */
+    protected $confSetupOptionValueFactory;
     /** @var ConfigurableOptionFactory */
     protected $configurableOptionFactory;
     /** @var ConfigurableSetupFactory */
@@ -51,8 +51,8 @@ class Factory
      * @param StockDataFactory $stockDataFactory
      * @param ConfigurableOptionFactory $configurableOptionFactory
      * @param ConfigurableSetupFactory $configurableSetupFactory
-     * @param ConfValueLabelMapFactory $confValueLabelMapFactory
-     * @param ConfValueLabelFactory $confValueLabelFactory
+     * @param ConfSetupOptionFactory $confSetupOptionFactory
+     * @param ConfSetupOptionValueFactory $confSetupOptionValueFactory
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
@@ -62,11 +62,11 @@ class Factory
         StockDataFactory $stockDataFactory,
         ConfigurableOptionFactory $configurableOptionFactory,
         ConfigurableSetupFactory $configurableSetupFactory,
-        ConfValueLabelMapFactory $confValueLabelMapFactory,
-        ConfValueLabelFactory $confValueLabelFactory
+        ConfSetupOptionFactory $confSetupOptionFactory,
+        ConfSetupOptionValueFactory $confSetupOptionValueFactory
     ) {
-        $this->confValueLabelFactory = $confValueLabelFactory;
-        $this->confValueLabelMapFactory = $confValueLabelMapFactory;
+        $this->confSetupOptionFactory = $confSetupOptionFactory;
+        $this->confSetupOptionValueFactory = $confSetupOptionValueFactory;
         $this->configurableOptionFactory = $configurableOptionFactory;
         $this->configurableSetupFactory = $configurableSetupFactory;
         $this->elisaProductFactory = $elisaProductFactory;
@@ -87,25 +87,25 @@ class Factory
     }
 
     /**
-     * Creates new instance of Configurable Attribute Value-Label Map
+     * Creates new instance of Configurable Setup Option
      *
      * @param array $args
-     * @return ConfValueLabelMap
+     * @return ConfSetupOption
      */
-    public function getNewConfigurableAttributeValueLabelMap(array $args = []): ConfValueLabelMap
+    public function getNewConfigurableSetupOption(array $args = []): ConfSetupOption
     {
-        return $this->confValueLabelMapFactory->create($args);
+        return $this->confSetupOptionFactory->create($args);
     }
 
     /**
-     * Creates new instance of Configurable Attribute Value-Label
+     * Creates new instance of Configurable Setup Option Value
      *
      * @param array $args
-     * @return ConfValueLabel
+     * @return ConfSetupOptionValue
      */
-    public function getNewConfigurableAttributeValueLabel(array $args = []): ConfValueLabel
+    public function getNewConfigurableSetupOptionValue(array $args = []): ConfSetupOptionValue
     {
-        return $this->confValueLabelFactory->create($args);
+        return $this->confSetupOptionValueFactory->create($args);
     }
 
     /**

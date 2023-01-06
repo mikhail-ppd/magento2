@@ -4,10 +4,10 @@
     <preference for="Elisa\ProductApi\Api\CartManagementInterface" type="Elisa\ProductApi\Model\CartManagement"/>
     <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableOptionInterface"
                 type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableOption"/>
-    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabelInterface"
-                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabel"/>
-    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabelMapInterface"
-                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup\ValueLabelMap"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup\Option"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionValueInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionValue"/>
     <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetupInterface"
                 type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup"/>
     <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductDataInterface"
@@ -43,7 +43,6 @@
                 <item name="configurable"
                       xsi:type="object">Elisa\ProductApi\Model\ParentProductIdProvider\Configurable
                 </item>
-                <item name="grouped" xsi:type="object">Elisa\ProductApi\Model\ParentProductIdProvider\Grouped</item>
             </argument>
         </arguments>
     </type>
@@ -60,7 +59,6 @@
                 <item name="basic" xsi:type="object">Elisa\ProductApi\Model\ProductDataBuilder\Basic</item>
                 <item name="configurable" xsi:type="object">Elisa\ProductApi\Model\ProductDataBuilder\Configurable
                 </item>
-                <item name="grouped" xsi:type="object">Elisa\ProductApi\Model\ProductDataBuilder\Grouped</item>
             </argument>
         </arguments>
     </type>
@@ -106,7 +104,6 @@
             <argument name="handlers" xsi:type="array">
                 <item name="default" xsi:type="object">Elisa\ProductApi\Model\QuoteItemHandler\DefaultHandler</item>
                 <item name="configurable" xsi:type="object">Elisa\ProductApi\Model\QuoteItemHandler\Configurable</item>
-                <item name="grouped" xsi:type="object">Elisa\ProductApi\Model\QuoteItemHandler\Grouped</item>
             </argument>
         </arguments>
     </type>
@@ -125,8 +122,6 @@
                 <item name="virtual" xsi:type="const">Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL</item>
                 <item name="configurable"
                       xsi:type="const">Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE
-                </item>
-                <item name="grouped" xsi:type="const">Magento\GroupedProduct\Model\Product\Type\Grouped::TYPE_CODE
                 </item>
                 <item name="downloadable" xsi:type="const">Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
                 </item>

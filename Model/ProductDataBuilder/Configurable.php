@@ -79,32 +79,31 @@ class Configurable implements ProductDataBuilderInterface
 
         $extensionAttributes = $product->getExtensionAttributes();
         $productConfigurableOptions = $extensionAttributes->getConfigurableProductOptions();
-        $configurableSetup->setProductOptions($productConfigurableOptions);
 
-        $attributeValueLabelLists = [];
+        $productOptions = [];
 
         foreach ($productConfigurableOptions as $option) {
-            $attributeValueLabelList = $this->context->getDataFactory()
-                ->getNewConfigurableAttributeValueLabelMap();
+            $productOption = $this->context->getDataFactory()->getNewConfigurableSetupOption();
+            $productOption->setAttributeId($option->getAttributeId())
+                ->setLabel($option->getLabel())
+                ->setPosition($option->getPosition())
+                ->setSuperAttributeId($option->getId());
 
-            $attributeValueLabelList->setAttributeId($option->getAttributeId());
-
-            $valueLabels = [];
+            $optionValues = [];
 
             /** @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable\OptionValue $value */
             foreach ($option->getOptions() as $value) {
-                $valueLabel = $this->context->getDataFactory()->getNewConfigurableAttributeValueLabel();
-                $valueLabel->setValue($value['value_index']);
-                $valueLabel->setLabel($value['label']);
-                $valueLabels[] = $valueLabel;
+                $optionValue = $this->context->getDataFactory()->getNewConfigurableSetupOptionValue();
+                $optionValue->setValue($value['value_index']);
+                $optionValue->setLabel($value['label']);
+                $optionValues[] = $optionValue;
             }
 
-            $attributeValueLabelList->setValueLabels($valueLabels);
-
-            $attributeValueLabelLists[] = $attributeValueLabelList;
+            $productOption->setValues($optionValues);
+            $productOptions[] = $productOption;
         }
 
-        $configurableSetup->setValueLabelMap($attributeValueLabelLists);
+        $configurableSetup->setProductOptions($productOptions);
 
         return $configurableSetup;
     }

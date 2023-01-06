@@ -4,7 +4,6 @@ namespace Elisa\ProductApi\Model\ProductTracker\Mview;
 
 use Elisa\ProductApi\Api\ParentProductIdProviderInterface;
 use Elisa\ProductApi\Model\ResourceModel\ProductTracker as ProductTrackerResource;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
 use Psr\Log\LoggerInterface;
 

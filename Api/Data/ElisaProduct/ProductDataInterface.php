@@ -2,7 +2,6 @@
 
 namespace Elisa\ProductApi\Api\Data\ElisaProduct;
 
-use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\BundleSetupInterface;
 use Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetupInterface;
 
 /**

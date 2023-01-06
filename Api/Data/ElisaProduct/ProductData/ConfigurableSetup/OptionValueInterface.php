@@ -5,7 +5,7 @@ namespace Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup;
 /**
  * @api
  */
-interface ValueLabelInterface
+interface OptionValueInterface
 {
     /**
      * Get label
@@ -25,15 +25,15 @@ interface ValueLabelInterface
      * Set Label
      *
      * @param string $value
-     * @return ValueLabelInterface
+     * @return OptionValueInterface
      */
-    public function setLabel(string $value): ValueLabelInterface;
+    public function setLabel(string $value): OptionValueInterface;
 
     /**
      * Set value index
      *
      * @param int $value
-     * @return ValueLabelInterface
+     * @return OptionValueInterface
      */
-    public function setValue(int $value): ValueLabelInterface;
+    public function setValue(int $value): OptionValueInterface;
 }
