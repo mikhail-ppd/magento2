@@ -32,7 +32,7 @@ class DefaultHandler implements QuoteItemHandlerInterface
     {
         return $this->dataObjectFactory->create([
             'data' => [
-                'product' => $product->getId(),
+                'product' => (int)$product->getId(),
                 'qty' => $requestProduct->getData('qty') ?? 1
             ]
         ]);

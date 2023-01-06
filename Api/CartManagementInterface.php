@@ -31,6 +31,12 @@ interface CartManagementInterface
     public function getCartRequestFromToken(string $token): CartRequest;
 
     /**
+     * @param int $quoteId
+     * @return bool
+     */
+    public function isQuoteProcessing(int $quoteId): bool;
+
+    /**
      * Get Quote for Cart Request
      *
      * @param CartRequest $cartRequest

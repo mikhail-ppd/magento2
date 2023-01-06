@@ -36,6 +36,8 @@ class CartManagement implements CartManagementInterface
     protected $dateTimeFactory;
     /** @var LoggerInterface */
     protected $logger;
+    /** @var ?int */
+    protected $processingQuoteId = null;
     /** @var ProductRepositoryInterface */
     protected $productRepository;
     /** @var QuoteItemHandlerProviderInterface */
@@ -137,6 +139,14 @@ class CartManagement implements CartManagementInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function isQuoteProcessing(int $quoteId): bool
+    {
+        return $this->processingQuoteId === $quoteId;
+    }
+
+    /**
      * @inheritdoc
      */
     public function setCartRequestToQuote(CartRequest $cartRequest, Quote $quote): Quote
@@ -144,7 +154,13 @@ class CartManagement implements CartManagementInterface
         $productData = $cartRequest->getDataByPath('cart_data/products');
 
         if ($productData) {
-            $quote->removeAllItems();
+            if ($quote->getAllItems()) {
+                $quote->removeAllItems();
+
+                if ($quoteId = $quote->getId()) {
+                    $this->processingQuoteId = (int)$quoteId;
+                }
+            }
 
             if ($storeCode = $cartRequest->getData('store_code')) {
                 $storeId = $this->storeManager->getStore($storeCode)->getId();
@@ -154,7 +170,7 @@ class CartManagement implements CartManagementInterface
             foreach ($productData as $productDatum) {
                 $requestProduct = $this->dataObjectFactory->create(['data' => $productDatum]);
                 $sku = $requestProduct->getData('sku');
-                $product = $this->productRepository->get($sku);
+                $product = $this->productRepository->get($sku, false, $quote->getStoreId(), true);
 
                 $typeId = $product->getTypeId();
 

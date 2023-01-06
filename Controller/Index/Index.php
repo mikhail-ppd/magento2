@@ -52,7 +52,7 @@ class Index extends Action implements HttpGetActionInterface
     public function execute()
     {
         $token = $this->getRequest()->getParam('refId', false);
-        $url = $this->_url->getUrl('checkout/cart');
+        $url = null;
 
         if ($token) {
             try {
@@ -64,6 +64,7 @@ class Index extends Action implements HttpGetActionInterface
                 /** @var Item $item */
                 $item = end($items);
                 $this->checkoutSession->setLastAddedProductId($item->getProductId());
+                $url = $this->_url->getUrl('checkout/cart') . '?e-ref='. md5($token);
 
                 $currentStore = $this->storeManager->getStore();
                 $targetStore = $quote->getStore();
@@ -72,7 +73,7 @@ class Index extends Action implements HttpGetActionInterface
                     $url = $this->storeSwitcher->switch($currentStore, $targetStore, $url);
                 }
             } catch (LocalizedException $e) {
-                $this->messageManager->addErrorMessage($e);
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
         } else {
             $this->messageManager->addErrorMessage(__("Token not provided."));
@@ -81,6 +82,11 @@ class Index extends Action implements HttpGetActionInterface
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+
+        if ($url === null) {
+            $url = $this->_url->getUrl('checkout/cart');
+        }
+
         $resultRedirect->setUrl($url);
 
         return $resultRedirect;

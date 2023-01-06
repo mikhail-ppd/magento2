@@ -43,7 +43,7 @@ class Configurable implements QuoteItemHandlerInterface
             $childSku = reset($childSku);
         }
 
-        $childProduct = $this->productRepository->get($childSku);
+        $childProduct = $this->productRepository->get($childSku, false, $product->getStoreId(), true);
 
         /** @var ConfigurableType $productTypeInstance */
         $productTypeInstance = $product->getTypeInstance();
@@ -54,12 +54,12 @@ class Configurable implements QuoteItemHandlerInterface
 
         foreach ($attributes as $attribute) {
             $attributeCode = $attribute->getProductAttribute()->getAttributeCode();
-            $superAttributeList[$attribute->getAttributeId()] = $childProduct->getData($attributeCode);
+            $superAttributeList[$attribute->getAttributeId()] = (int)$childProduct->getData($attributeCode);
         }
 
         return $this->dataObjectFactory->create([
             'data' => [
-                'product' => $product->getId(),
+                'product' => (int)$product->getId(),
                 'qty' => $requestProduct->getData('qty') ?? 1,
                 'super_attribute' => $superAttributeList
             ]
