@@ -9,7 +9,7 @@ class Composite implements ParentProductIdProviderInterface
     /**
      * @var ParentProductIdProviderInterface[]
      */
-    protected array $providers;
+    protected $providers;
 
     /**
      * @param ParentProductIdProviderInterface[] $providers
@@ -38,6 +38,6 @@ class Composite implements ParentProductIdProviderInterface
             }
         }
 
-        return array_unique(array_merge(...$resultParentIds));
+        return $resultParentIds ? array_unique(array_merge(...$resultParentIds)) : [];
     }
 }

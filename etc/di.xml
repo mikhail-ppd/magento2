@@ -28,7 +28,6 @@
     <preference for="Elisa\ProductApi\Api\SupportedProductTypesProviderInterface"
                 type="Elisa\ProductApi\Model\SupportedProductTypesProvider"/>
 
-
     <type name="Elisa\ProductApi\Model\CartManagement">
         <arguments>
             <argument name="quoteItemHandlerProvider"
@@ -127,6 +126,9 @@
                 </item>
             </argument>
         </arguments>
+    </type>
+    <type name="Magento\Framework\Mview\View\Collection">
+        <plugin name="elisa_product_api" type="Elisa\ProductApi\Plugin\Framework\Mview\View\CollectionPlugin"/>
     </type>
 
     <virtualType name="Elisa\ProductApi\Model\Data\VersionInfo" type="Magento\Framework\DataObject">

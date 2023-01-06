@@ -16,7 +16,8 @@ class DataBuilderContext
     protected $dataFactory;
     /** @var ModuleManager  */
     protected $moduleManager;
-    protected SearchCriteriaBuilder $searchCriteriaBuilder;
+    /** @var SearchCriteriaBuilder  */
+    protected $searchCriteriaBuilder;
     /** @var StoreManagerInterface  */
     protected $storeManager;
 

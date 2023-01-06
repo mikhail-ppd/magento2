@@ -48,7 +48,8 @@ class CartManagement implements CartManagementInterface
     protected $requestToQuoteResource;
     /** @var SerializerInterface */
     protected $serializer;
-    protected StoreManagerInterface $storeManager;
+    /** @var StoreManagerInterface  */
+    protected $storeManager;
     /** @var UrlInterface */
     protected $urlBuilder;
 

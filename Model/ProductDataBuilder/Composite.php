@@ -14,7 +14,7 @@ class Composite implements ProductDataBuilderInterface
     /**
      * @var ProductDataBuilderInterface[]
      */
-    protected array $builders;
+    protected $builders;
 
     /**
      * @param ProductDataBuilderInterface[] $builders

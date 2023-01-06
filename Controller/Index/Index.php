@@ -22,7 +22,8 @@ class Index extends Action implements HttpGetActionInterface
     protected $checkoutSession;
     /** @var StoreManagerInterface */
     protected $storeManager;
-    protected StoreSwitcherInterface $storeSwitcher;
+    /** @var StoreSwitcherInterface  */
+    protected $storeSwitcher;
 
     /**
      * @param Context $context

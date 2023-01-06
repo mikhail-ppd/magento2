@@ -10,7 +10,7 @@ class Composite implements ProductValidatorInterface
     /**
      * @var ProductValidatorInterface[]
      */
-    protected array $validators;
+    protected $validators;
 
     /**
      * @param ProductValidatorInterface[] $validators

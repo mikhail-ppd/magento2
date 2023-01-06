@@ -11,7 +11,7 @@ class Composite implements StockDataBuilderInterface
     /**
      * @var StockDataBuilderInterface[]
      */
-    protected array $builders;
+    protected $builders;
 
     /**
      * @param StockDataBuilderInterface[] $builders

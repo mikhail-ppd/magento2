@@ -24,6 +24,7 @@ class Legacy implements StockDataBuilderInterface
 
     /**
      * @param StockRegistryInterface $stockRegistry
+     * @param StockConfigurationInterface $stockConfiguration
      * @param Context $context
      */
     public function __construct(
