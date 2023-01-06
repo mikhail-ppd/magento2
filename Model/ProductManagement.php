@@ -95,7 +95,7 @@ class ProductManagement implements ProductManagementInterface
     /**
      * @inheritDoc
      */
-    public function getDeltaList(int $timestamp): SearchResultsInterface
+    public function getDeltaList(int $timestamp, array $skus = []): SearchResultsInterface
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
 
@@ -106,13 +106,17 @@ class ProductManagement implements ProductManagementInterface
         $searchCriteriaBuilder->addFilter('entity_id', $productIds, 'in');
         $searchCriteriaBuilder->addFilter('type_id', $this->supportedProductTypesProvider->getTypeIds(), 'in');
 
+        if ($skus = array_filter($skus)) {
+            $searchCriteriaBuilder->addFilter('sku', $skus, 'in');
+        }
+
         return $this->getListResults($searchCriteriaBuilder->create(), $productIds);
     }
 
     /**
      * @inheritdoc
      */
-    public function getList(int $page = 1, int $pageSize = 500): SearchResultsInterface
+    public function getList(int $page = 1, int $pageSize = 500, array $skus = []): SearchResultsInterface
     {
         $searchCriteriaBuilder = $this->searchCriteriaBuilder;
 
@@ -129,6 +133,10 @@ class ProductManagement implements ProductManagementInterface
         );
 
         $searchCriteriaBuilder->addFilter('type_id', $this->supportedProductTypesProvider->getTypeIds(), 'in');
+
+        if ($skus = array_filter($skus)) {
+            $searchCriteriaBuilder->addFilter('sku', $skus, 'in');
+        }
 
         $searchCriteriaBuilder->setPageSize($pageSize)->setCurrentPage($page);
         return $this->getListResults($searchCriteriaBuilder->create());

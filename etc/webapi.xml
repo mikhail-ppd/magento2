@@ -12,19 +12,19 @@
             <resource ref="Elisa_ProductApi::get_orders" />
         </resources>
     </route>
-    <route url="/V1/elisa/products/delta/:timestamp" method="GET">
+    <route url="/V1/elisa/products/delta/:timestamp" method="POST">
         <service class="Elisa\ProductApi\Api\ProductManagementInterface" method="getDeltaList"/>
         <resources>
             <resource ref="Elisa_ProductApi::products_by_timestamp" />
         </resources>
     </route>
-    <route url="/V1/elisa/products/:page" method="GET">
+    <route url="/V1/elisa/products/:page" method="POST">
         <service class="Elisa\ProductApi\Api\ProductManagementInterface" method="getList"/>
         <resources>
             <resource ref="Elisa_ProductApi::products_by_timestamp" />
         </resources>
     </route>
-    <route url="/V1/elisa/products/:pageSize/:page" method="GET">
+    <route url="/V1/elisa/products/:pageSize/:page" method="POST">
         <service class="Elisa\ProductApi\Api\ProductManagementInterface" method="getList"/>
         <resources>
             <resource ref="Elisa_ProductApi::products_by_timestamp" />
