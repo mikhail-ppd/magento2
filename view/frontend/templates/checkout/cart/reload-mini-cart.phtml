@@ -2,11 +2,6 @@
 /** @var $block \Elisa\ProductApi\Block\Checkout\Cart\ReloadMiniCart */
 /** @var $escaper \Magento\Framework\Escaper */
 ?>
-
-<script type="text/javascript">
-    require([
-        'Magento_Customer/js/customer-data'
-    ], function (customerData) {
-        customerData.reload(['cart'], true);
-    });
+<script type="text/x-magento-init">
+{"*":{"Elisa_ProductApi\/js\/reload-mini-cart":{}}}
 </script>

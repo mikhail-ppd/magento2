@@ -17,7 +17,7 @@ class QuoteItemQtyListPlugin
      * @param CartManagementInterface $cartManagement
      */
     public function __construct(
-        CartManagementInterface $cartManagement,
+        CartManagementInterface $cartManagement
     ) {
         $this->cartManagement = $cartManagement;
     }
