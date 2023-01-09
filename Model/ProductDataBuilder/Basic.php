@@ -5,6 +5,8 @@ namespace Elisa\ProductApi\Model\ProductDataBuilder;
 use Elisa\ProductApi\Api\Data\ElisaProduct\ProductDataInterface;
 use Elisa\ProductApi\Api\ParentProductIdProviderInterface;
 use Elisa\ProductApi\Api\ProductDataBuilderInterface;
+use Elisa\ProductApi\Model\Config;
+use Elisa\ProductApi\Model\Data\OptionSource\MappableProductDataFields;
 use Elisa\ProductApi\Model\DataBuilderContext as Context;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Helper\Image as ImageHelper;
@@ -16,35 +18,32 @@ use Magento\Framework\App\Area;
  */
 class Basic implements ProductDataBuilderInterface
 {
-    /** @var string|null */
-    protected $altNameAttributeCode;
+    /** @var Config */
+    protected $config;
     /** @var Context */
     protected $context;
     /** @var ImageHelper */
     protected $imageHelper;
-    /** @var string */
-    protected $mainImageId;
     /** @var ParentProductIdProviderInterface */
     protected $parentProductIdProvider;
+    /** @var array|null */
+    protected $elisaProductDataMap = null;
 
     /**
      * @param ParentProductIdProviderInterface $parentProductIdProvider
      * @param ImageHelper $imageHelper
      * @param Context $context
-     * @param string $mainImageId
-     * @param string|null $altNameAttributeCode
+     * @param Config $config
      */
     public function __construct(
         ParentProductIdProviderInterface $parentProductIdProvider,
         ImageHelper $imageHelper,
         Context $context,
-        string $mainImageId = 'product_page_image_large',
-        ?string $altNameAttributeCode = null
+        Config $config
     ) {
-        $this->altNameAttributeCode = $altNameAttributeCode;
+        $this->config = $config;
         $this->context = $context;
         $this->imageHelper = $imageHelper;
-        $this->mainImageId = $mainImageId;
         $this->parentProductIdProvider = $parentProductIdProvider;
     }
 
@@ -69,35 +68,99 @@ class Basic implements ProductDataBuilderInterface
         $storeId = $this->context->getStoreManager()->getStore()->getId();
         $this->context->getAppEmulation()->startEnvironmentEmulation($storeId, Area::AREA_FRONTEND, true);
 
-        $name = $this->altNameAttributeCode
-            ? ($product->getData($this->altNameAttributeCode) ?: $product->getName())
-            : $product->getName();
-
         $productData->setEntityId($product->getId())
             ->setSku($product->getSku())
-            ->setName($name)
-            ->setPrice($product->getFinalPrice())
-            ->setSuggestedRetailPrice($product->getPrice() ?? 0)
-            ->setUrl($product->getProductUrl())
+            ->setName(
+                (string)$this->getElisaProductFieldData(
+                    MappableProductDataFields::FIELD_NAME,
+                    $product,
+                    $product->getName()
+                )
+            )->setPrice($product->getFinalPrice())
+            ->setSuggestedRetailPrice(
+                (float)$this->getElisaProductFieldData(
+                    MappableProductDataFields::FIELD_RECOMMENDED_RETAIL_PRICE,
+                    $product,
+                    $product->getPrice() ?? 0
+                )
+            )->setUrl($product->getProductUrl())
             ->setTypeId($product->getTypeId())
             ->setStatus($product->getStatus())
             ->setVisibility($product->getVisibility() ?? Visibility::VISIBILITY_NOT_VISIBLE)
             ->setWebsiteIds($product->getWebsiteIds());
 
-        $imageUrl = $this->imageHelper->init($product, $this->mainImageId)->getUrl();
-        $productData->setMainImage($imageUrl);
+        $mainImageUrl = null;
+        $imageAttrValue = $product->getData('image');
 
         $productImages = $product->getMediaGalleryImages();
         $otherImages = [];
 
         foreach ($productImages as $productImage) {
+            if ($imageAttrValue && $productImage->getFile() === $imageAttrValue) {
+                $mainImageUrl = $productImage->getUrl();
+                continue;
+            }
+
             $otherImages[] = $productImage->getUrl();
         }
 
+        if (!$mainImageUrl) {
+            $mainImageUrl = $this->imageHelper->init($product, 'product_page_image_large')->getUrl();
+        }
+
+        $productData->setMainImage($mainImageUrl);
         $productData->setOtherImages($otherImages);
 
         $this->context->getAppEmulation()->stopEnvironmentEmulation();
 
         return null;
+    }
+
+    /**
+     * Gets elisa product field data
+     *
+     * @param string $field
+     * @param \Magento\Catalog\Model\Product $product
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    private function getElisaProductFieldData(
+        string $field,
+        \Magento\Catalog\Model\Product $product,
+        $defaultValue = null
+    ) {
+        $map = $this->getElisaProductDataMap();
+
+        if (!array_key_exists($field, $map)) {
+            return $defaultValue;
+        }
+
+        return $product->hasData($map[$field]) ? $product->getData($map[$field]) : $defaultValue;
+    }
+
+    /**
+     * Returns mapping of data fields to attribute code
+     *
+     * @return array
+     */
+    private function getElisaProductDataMap(): array
+    {
+        if ($this->elisaProductDataMap === null) {
+            $this->elisaProductDataMap = [];
+            $configMapping = $this->config->getProductDataMapping();
+
+            foreach ($configMapping as $mapping) {
+                $field = (string)$mapping['field'];
+                $attributeCode = (string)$mapping['attribute_code'];
+
+                if (!$attributeCode || !in_array($field, MappableProductDataFields::FIELDS)) {
+                    continue;
+                }
+
+                $this->elisaProductDataMap[$field] = $attributeCode;
+            }
+        }
+
+        return $this->elisaProductDataMap;
     }
 }

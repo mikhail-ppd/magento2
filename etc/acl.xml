@@ -13,6 +13,13 @@
                     <resource id="Elisa_ProductApi::get_orders" title="Get orders by timestamp"
                               translate="title" sortOrder="30" />
                 </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Elisa_ProductApi::settings" title="ELISA Settings" sortOrder="10000"/>
+                        </resource>
+                    </resource>
+                </resource>
             </resource>
         </resources>
     </acl>

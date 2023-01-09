@@ -84,7 +84,7 @@
         <arguments>
             <argument name="validators" xsi:type="array">
                 <item name="visibility" xsi:type="object">Elisa\ProductApi\Model\ProductValidator\Visibility</item>
-                <item name="rule" xsi:type="object">Elisa\ProductApi\Model\ProductValidator\Rule</item>
+                <!--<item name="rule" xsi:type="object">Elisa\ProductApi\Model\ProductValidator\Rule</item>-->
             </argument>
         </arguments>
     </type>
