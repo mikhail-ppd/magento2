@@ -6,6 +6,7 @@ use Elisa\ProductApi\Model\Data\OptionSource\MappableProductDataFields as Mappab
 use Elisa\ProductApi\Model\Data\OptionSource\ProductAttributes as ProductAttributeOptions;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Data\Form\Element\Factory as ElementFactory;
 
 /**
@@ -13,20 +14,23 @@ use Magento\Framework\Data\Form\Element\Factory as ElementFactory;
  */
 class AttributeDataMapping extends AbstractFieldArray
 {
-    /** @var MappableFieldOptions */
-    protected $mappableFieldOptions;
-    /** @var ProductAttributeOptions */
-    protected $productAttributeOptions;
     /** @var ElementFactory */
     protected $elementFactory;
+    /** @var MappableFieldOptions */
+    protected $mappableFieldOptions;
     /** @var array */
     protected $options;
+    /** @var ProductAttributeOptions */
+    protected $productAttributeOptions;
+    /** @var ProductMetadataInterface */
+    protected $productMetadata;
 
     /**
      * @param Context $context
      * @param ElementFactory $elementFactory
      * @param MappableFieldOptions $mappableFieldOptions
      * @param ProductAttributeOptions $productAttributeOptions
+     * @param ProductMetadataInterface $productMetadata
      * @param array $data
      */
     public function __construct(
@@ -34,12 +38,14 @@ class AttributeDataMapping extends AbstractFieldArray
         ElementFactory $elementFactory,
         MappableFieldOptions $mappableFieldOptions,
         ProductAttributeOptions $productAttributeOptions,
+        ProductMetadataInterface $productMetadata,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->elementFactory = $elementFactory;
         $this->mappableFieldOptions = $mappableFieldOptions;
         $this->productAttributeOptions = $productAttributeOptions;
+        $this->productMetadata = $productMetadata;
     }
 
     /**
@@ -100,6 +106,12 @@ class AttributeDataMapping extends AbstractFieldArray
     private function getSelectElementHtml(string $columnName, array $options)
     {
         $element = $this->elementFactory->create('select');
+
+        if (version_compare($this->productMetadata->getVersion(), '2.3.3', '<')) {
+            foreach ($options as &$option) {
+                $option['label'] = $this->escapeJs($option['label']);
+            }
+        }
 
         $element->setForm(
             $this->getForm()
