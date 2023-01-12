@@ -13,5 +13,8 @@
         <job name="tracker_mview_clear" instance="Elisa\ProductApi\Model\Cron\Mview\GroupProcessor" method="clearChangelogs">
             <schedule>0 * * * *</schedule>
         </job>
+        <job name="tracker_tracker_clear" instance="Elisa\ProductApi\Model\Cron\ProductTracker" method="clearOldTrackerData">
+            <schedule>0 0 * * *</schedule>
+        </job>
     </group>
 </config>
