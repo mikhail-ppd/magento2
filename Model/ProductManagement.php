@@ -102,13 +102,17 @@ class ProductManagement implements ProductManagementInterface
         /** @var ProductTrackerCollection $trackerCollection */
         $trackerCollection = $this->productTrackerCollectionFactory->create();
         $trackerCollection->addFieldToFilter(ProductTracker::KEY_UPDATE_UTC_TIMESTAMP, ['gt' => $timestamp]);
-        $productIds = array_map('intval', $trackerCollection->getAllIds());
-        $searchCriteriaBuilder->addFilter('entity_id', $productIds, 'in');
-        $searchCriteriaBuilder->addFilter('type_id', $this->supportedProductTypesProvider->getTypeIds(), 'in');
 
         if ($skus = array_filter($skus)) {
             $searchCriteriaBuilder->addFilter('sku', $skus, 'in');
+            $select = $trackerCollection->getSelect();
+            $select->joinInner(['cpe'=>'catalog_product_entity'], "product_id = cpe.entity_id", null);
+            $select->where("cpe.sku IN (?)", $skus);
         }
+
+        $productIds = array_map('intval', $trackerCollection->getAllIds());
+        $searchCriteriaBuilder->addFilter('entity_id', $productIds, 'in');
+        $searchCriteriaBuilder->addFilter('type_id', $this->supportedProductTypesProvider->getTypeIds(), 'in');
 
         return $this->getListResults($searchCriteriaBuilder->create(), $productIds);
     }
