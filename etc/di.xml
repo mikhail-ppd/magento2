@@ -1,6 +1,162 @@
 <?xml version="1.0" ?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Elisa\ProductApi\Api\Data\ProductApiInterface" type="Elisa\ProductApi\Model\ProductApi"/>
-    <preference for="Elisa\ProductApi\Api\Data\CartApiInterface" type="Elisa\ProductApi\Model\CartApi"/>
-    <preference for="Elisa\ProductApi\Api\Data\OrderApiInterface" type="Elisa\ProductApi\Model\OrderApi"/>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Elisa\ProductApi\Api\CartManagementInterface" type="Elisa\ProductApi\Model\CartManagement"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableOptionInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableOption"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup\Option"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionValueInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup\OptionValue"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductData\ConfigurableSetupInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData\ConfigurableSetup"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\ProductDataInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\ProductData"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\StockDataInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\StockData"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\SearchResultsInterface"
+                type="Elisa\ProductApi\Model\Data\ElisaProduct\SearchResults"/>
+    <preference for="Elisa\ProductApi\Api\Data\ElisaProductInterface" type="Elisa\ProductApi\Model\Data\ElisaProduct"/>
+    <preference for="Elisa\ProductApi\Api\Data\ProductTrackerInterface" type="Elisa\ProductApi\Model\ProductTracker"/>
+    <preference for="Elisa\ProductApi\Api\Data\VersionInfoInterface" type="Elisa\ProductApi\Model\Data\VersionInfo"/>
+    <preference for="Elisa\ProductApi\Api\IntegrationManagementInterface"
+                type="Elisa\ProductApi\Model\IntegrationManagement"/>
+    <preference for="Elisa\ProductApi\Api\OrderManagementInterface" type="Elisa\ProductApi\Model\OrderManagement"/>
+    <preference for="Elisa\ProductApi\Api\ProductManagementInterface" type="Elisa\ProductApi\Model\ProductManagement"/>
+    <preference for="Elisa\ProductApi\Api\QuoteItemHandlerProviderInterface"
+                type="Elisa\ProductApi\Model\QuoteItemHandler\Provider"/>
+    <preference for="Elisa\ProductApi\Api\SupportedProductTypesProviderInterface"
+                type="Elisa\ProductApi\Model\SupportedProductTypesProvider"/>
+
+    <type name="Elisa\ProductApi\Model\CartManagement">
+        <arguments>
+            <argument name="quoteItemHandlerProvider"
+                      xsi:type="object">Elisa\ProductApi\Api\QuoteItemHandlerProviderInterface\Proxy
+            </argument>
+            <argument name="logger" xsi:type="object">Elisa\ProductApi\Model\Logger</argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\ParentProductIdProvider\Composite">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="configurable"
+                      xsi:type="object">Elisa\ProductApi\Model\ParentProductIdProvider\Configurable
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\ProductDataBuilder\Basic">
+        <arguments>
+            <argument name="parentProductIdProvider"
+                      xsi:type="object">Elisa\ProductApi\Model\ParentProductIdProvider\Composite
+            </argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\ProductDataBuilder\Composite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="basic" xsi:type="object">Elisa\ProductApi\Model\ProductDataBuilder\Basic</item>
+                <item name="configurable" xsi:type="object">Elisa\ProductApi\Model\ProductDataBuilder\Configurable
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\ProductManagement">
+        <arguments>
+            <argument name="productDataBuilder" xsi:type="object">Elisa\ProductApi\Model\ProductDataBuilder\Composite
+            </argument>
+            <argument name="stockDataBuilder" xsi:type="object">Elisa\ProductApi\Model\StockDataBuilder\Composite
+            </argument>
+            <argument name="productValidator" xsi:type="object">Elisa\ProductApi\Model\ProductValidator\Composite
+            </argument>
+            <argument name="logger" xsi:type="object">Elisa\ProductApi\Model\Logger</argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\ProductTracker\Mview\Action">
+        <arguments>
+            <argument name="parentProductIdProvider"
+                      xsi:type="object">Elisa\ProductApi\Model\ParentProductIdProvider\Composite
+            </argument>
+            <argument name="logger" xsi:type="object">Elisa\ProductApi\Model\Logger</argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\ProductValidator\Composite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="visibility" xsi:type="object">Elisa\ProductApi\Model\ProductValidator\Visibility</item>
+                <!--<item name="rule" xsi:type="object">Elisa\ProductApi\Model\ProductValidator\Rule</item>-->
+            </argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\QuoteItemHandler\DefaultHandler">
+        <arguments>
+            <argument name="productTypeIds" xsi:type="array">
+                <item name="simple" xsi:type="const">Magento\Catalog\Model\Product\Type::TYPE_SIMPLE</item>
+                <item name="virtual" xsi:type="const">Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL</item>
+                <item name="downloadable" xsi:type="const">Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\QuoteItemHandler\Provider">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="object">Elisa\ProductApi\Model\QuoteItemHandler\DefaultHandler</item>
+                <item name="configurable" xsi:type="object">Elisa\ProductApi\Model\QuoteItemHandler\Configurable</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\StockDataBuilder\Composite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="legacy" xsi:type="object">Elisa\ProductApi\Model\StockDataBuilder\Legacy</item>
+                <item name="msi" xsi:type="object">Elisa\ProductApi\Model\StockDataBuilder\MultiSourceInventory</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\SupportedProductTypesProvider">
+        <arguments>
+            <argument name="supportedProductTypeIds" xsi:type="array">
+                <item name="simple" xsi:type="const">Magento\Catalog\Model\Product\Type::TYPE_SIMPLE</item>
+                <item name="virtual" xsi:type="const">Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL</item>
+                <item name="configurable"
+                      xsi:type="const">Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE
+                </item>
+                <item name="downloadable" xsi:type="const">Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Mview\View\Collection">
+        <plugin name="elisa_product_api" type="Elisa\ProductApi\Plugin\Framework\Mview\View\CollectionPlugin"/>
+    </type>
+
+    <virtualType name="Elisa\ProductApi\Model\Data\VersionInfo" type="Magento\Framework\DataObject">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="cart_api" xsi:type="string">1.0.0</item>
+                <item name="order_api" xsi:type="string">1.0.0</item>
+                <item name="product_api" xsi:type="string">1.0.0</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Elisa\ProductApi\Model\IntegrationManagement" type="Magento\Framework\DataObject">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="version_info" xsi:type="object">Elisa\ProductApi\Model\Data\VersionInfo</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Elisa\ProductApi\Model\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/elisa.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Elisa\ProductApi\Model\Logger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Elisa\ProductApi\Model\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>

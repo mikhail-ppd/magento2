@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="elisa" translate="label" sortOrder="110">
+            <label>ELISA</label>
+        </tab>
+        <section id="elisa_sync" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>ELISA Sync</label>
+            <tab>elisa</tab>
+            <resource>Elisa_ProductApi::settings</resource>
+            <group id="product" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                <attribute type="expanded">1</attribute>
+                <label>Product</label>
+                <field id="data_mapping" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Data Mapping</label>
+                    <frontend_model>Elisa\ProductApi\Block\Adminhtml\System\Config\Form\Field\AttributeDataMapping</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>Optional mapping if defaults need to be overridden.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

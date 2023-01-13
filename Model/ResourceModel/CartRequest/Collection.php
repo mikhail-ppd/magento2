@@ -1,6 +1,10 @@
 <?php
+
 namespace Elisa\ProductApi\Model\ResourceModel\CartRequest;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ */
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
     protected $_idFieldName = 'id';
@@ -8,13 +12,15 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     protected $_eventObject = 'cartrequest_collection';
 
     /**
-     * Define resource model
-     *
-     * @return void
+     * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
     {
-        $this->_init('Elisa\ProductApi\Model\CartRequest', 'Elisa\ProductApi\Model\ResourceModel\CartRequest');
+        $this->_init(
+            \Elisa\ProductApi\Model\CartRequest::class,
+            \Elisa\ProductApi\Model\ResourceModel\CartRequest::class
+        );
     }
 
 }

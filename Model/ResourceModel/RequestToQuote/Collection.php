@@ -1,6 +1,10 @@
 <?php
+
 namespace Elisa\ProductApi\Model\ResourceModel\RequestToQuote;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ */
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
     protected $_idFieldName = 'id';
@@ -8,13 +12,15 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     protected $_eventObject = 'cartrequest_to_quote_collection';
 
     /**
-     * Define resource model
-     *
-     * @return void
+     * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
     {
-        $this->_init('Elisa\ProductApi\Model\RequestToQuote', 'Elisa\ProductApi\Model\ResourceModel\RequestToQuote');
+        $this->_init(
+            \Elisa\ProductApi\Model\RequestToQuote::class,
+            \Elisa\ProductApi\Model\ResourceModel\RequestToQuote::class
+        );
     }
 
 }
