@@ -6,6 +6,10 @@
         <label>ELISA Events</label>
         <description>List past, current and planned ELISA events.</description>
         <parameters>
+            <parameter name="title" sort_order="5" required="false" xsi:type="text" visible="true">
+                <label>Heading</label>
+                <description>Leave empty to hide heading.</description>
+            </parameter>
             <parameter name="status" sort_order="10" required="false" xsi:type="multiselect" visible="true"
                        source_model="Elisa\ProductApi\Model\Data\OptionSource\EventStatuses">
                 <label>Event Status</label>
@@ -37,7 +41,7 @@
                     <option name="desc" value="desc" selected="true">
                         <label>Newest Event First</label>
                     </option>
-                    <option name="asc" value="asc" selected="false">
+                    <option name="asc" value="asc">
                         <label>Oldest Event First</label>
                     </option>
                 </options>
@@ -50,16 +54,16 @@
             <parameter name="date_format" sort_order="50" required="false" xsi:type="select" visible="true">
                 <label>Localized Date Format</label>
                 <options>
-                    <option name="short" value="3" selected="false">
+                    <option name="3" value="3">
                         <label>Most abbreviated style, only essential data (12/13/52)</label>
                     </option>
-                    <option name="medium" value="2" selected="true">
+                    <option name="2" value="2" selected="true">
                         <label>Medium style (Jan 12, 1952)</label>
                     </option>
-                    <option name="long" value="1" selected="false">
+                    <option name="1" value="1">
                         <label>Long style (January 12, 1952)</label>
                     </option>
-                    <option name="full" value="0" selected="false">
+                    <option name="0" value="0">
                         <label>Completely specified style (Tuesday, April 12, 1952 AD)</label>
                     </option>
                 </options>
@@ -67,16 +71,16 @@
             <parameter name="time_format" sort_order="51" required="false" xsi:type="select" visible="true">
                 <label>Localized Time Format</label>
                 <options>
-                    <option name="short" value="3" selected="true">
+                    <option name="3" value="3" selected="true">
                         <label>Most abbreviated style, only essential data (3:30pm)</label>
                     </option>
-                    <option name="medium" value="2" selected="false">
+                    <option name="2" value="2">
                         <label>Medium style (3:30:42pm)</label>
                     </option>
-                    <option name="long" value="1" selected="false">
+                    <option name="1" value="1">
                         <label>Long style (3:30:32pm PST)</label>
                     </option>
-                    <option name="full" value="0" selected="false">
+                    <option name="0" value="0">
                         <label>Completely specified style (3:30:42pm Pacific Standard Time)</label>
                     </option>
                 </options>
@@ -84,10 +88,10 @@
             <parameter name="show_description" sort_order="60" required="false" xsi:type="select" visible="true">
                 <label>Show Description</label>
                 <options>
-                    <option name="no" value="0" selected="true">
+                    <option name="0" value="0" selected="true">
                         <label>No</label>
                     </option>
-                    <option name="yes" value="1" selected="false">
+                    <option name="1" value="1">
                         <label>Yes</label>
                     </option>
                 </options>
@@ -98,10 +102,10 @@
                     <![CDATA[Disable this if your development team has styled our widget in your theme.]]>
                 </description>
                 <options>
-                    <option name="no" value="0" selected="false">
+                    <option name="0" value="0">
                         <label>No</label>
                     </option>
-                    <option name="yes" value="1" selected="true">
+                    <option name="1" value="1" selected="true">
                         <label>Yes</label>
                     </option>
                 </options>

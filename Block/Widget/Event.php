@@ -68,6 +68,10 @@ class Event extends Template implements BlockInterface, IdentityInterface
             $classes[] = 'no-button-label';
         }
 
+        if ($this->getTitle()) {
+            $classes[] = 'with-title';
+        }
+
         if ($this->isDescriptionShown()) {
             $classes[] = 'with-description';
         }
@@ -92,6 +96,7 @@ class Event extends Template implements BlockInterface, IdentityInterface
         $key['use_default_styles'] = $this->isDefaultStylingUsed();
         $key['show_description'] = $this->isDescriptionShown();
         $key['play_button_label'] = $this->getPlayButtonLabel() ?? '';
+        $key['title'] = $this->getTitle() ?? '';
 
         return $key;
     }
@@ -138,7 +143,7 @@ class Event extends Template implements BlockInterface, IdentityInterface
 
             $sortDir = (string)$this->getData('sort_order');
             $statusCsv = (string)$this->getData('status');
-            $statuses = explode(',', $statusCsv);
+            $statuses = array_filter(explode(',', $statusCsv));
             $tagCsv = (string)$this->getData('tags');
             $limit = (int)$this->getData('limit');
 
@@ -230,6 +235,16 @@ class Event extends Template implements BlockInterface, IdentityInterface
     }
 
     /**
+     * Get widget title
+     *
+     * @return string|null
+     */
+    public function getTitle(): ?string
+    {
+        return $this->getData('title') ?: null;
+    }
+
+    /**
      * Is event playable
      *
      * @param EventInterface $event
@@ -241,19 +256,6 @@ class Event extends Template implements BlockInterface, IdentityInterface
             $event->getStatus(),
             [EventStatuses::STATUS_VOD, EventStatuses::STATUS_LIVE]
         );
-    }
-
-    /**
-     * @inheritDoc
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     */
-    protected function _prepareLayout()
-    {
-        if ($this->config->isOnSiteEventsActive() && $this->isDefaultStylingUsed()) {
-            $this->pageConfig->addPageAsset('Elisa_ProductApi::css/events.css', [], 'elisa-events-css');
-        }
-
-        return parent::_prepareLayout();
     }
 
     /**

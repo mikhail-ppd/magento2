@@ -4,32 +4,38 @@
 $events = $block->getEvents();
 ?>
 <?php if ($events): ?>
-    <div class="elisa-events-container<?= $block->getAdditionalClasses() ?>">
-        <?php foreach ($events as $event): ?>
-            <div class="elisa-events-single">
-                <div class="elisa-image">
-                    <img alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
-                         src="<?= $escaper->escapeUrl($block->getCoverPhotoUrl($event)) ?>"/>
+    <div class="elisa-events-wrapper<?= $escaper->escapeHtmlAttr($block->getAdditionalClasses()) ?>">
+        <?php if ($title = $block->getTitle()): ?>
+        <h2 class="event-widget-title"><?= $escaper->escapeHtml(__($title)) ?></h2>
+        <?php endif; ?>
+        <div class="elisa-events-container">
+            <?php foreach ($events as $event): ?>
+                <div class="elisa-events-single">
+                    <div class="elisa-image">
+                        <img alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
+                             src="<?= $escaper->escapeUrl($block->getCoverPhotoUrl($event)) ?>"/>
+                    </div>
+                    <?php if ($block->isPlayable($event)): ?>
+                        <?php
+                        $playButtonLabel = $block->getPlayButtonLabel();
+                        $playButtonAlt = $playButtonLabel ?: "Open";
+                        ?>
+                        <button type="button"
+                                data-elisa-event-id="<?= $escaper->escapeHtmlAttr($event->getEventId()) ?>"
+                                data-elisa-campaign-id="<?= $escaper->escapeHtmlAttr($event->getCampaignId()) ?>"
+                                class="elisa-play-button play button" name="play"
+                                title="<?= $escaper->escapeHtmlAttr(__($playButtonAlt)) ?>">
+                            <i class="gg-play-button"><?= $escaper->escapeHtml(__($playButtonLabel)) ?></i>
+                        </button>
+                    <?php endif; ?>
+                    <p class="date"><?= $escaper->escapeHtml($block->getStartTime($event)) ?></p>
+                    <h4 class="title"><?= $escaper->escapeHtml($event->getName()) ?></h4>
+                    <?php if ($description = $block->getDescription($event)): ?>
+                        <p class="description"><?= /** @noEscape */
+                            $description ?></p>
+                    <?php endif; ?>
                 </div>
-                <?php if ($block->isPlayable($event)): ?>
-                    <?php
-                    $playButtonLabel = $block->getPlayButtonLabel();
-                    $playButtonAlt = $playButtonLabel ?: "Open";
-                    ?>
-                    <button type="button" data-elisa-event-id="<?= $escaper->escapeHtmlAttr($event->getEventId()) ?>"
-                            data-elisa-campaign-id="<?= $escaper->escapeHtmlAttr($event->getCampaignId()) ?>"
-                            class="elisa-play-button play button" name="play"
-                            value="<?= $escaper->escapeHtmlAttr(__($playButtonAlt)) ?>">
-                        <i class="gg-play-button"><?= $escaper->escapeHtml(__($playButtonLabel)) ?></i>
-                    </button>
-                <?php endif; ?>
-                <p class="date"><?= $escaper->escapeHtml($block->getStartTime($event)) ?></p>
-                <h4 class="title"><?= $escaper->escapeHtml($event->getName()) ?></h4>
-                <?php if ($description = $block->getDescription($event)): ?>
-                    <p class="description"><?= /** @noEscape */
-                        $description ?></p>
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
 <?php endif; ?>

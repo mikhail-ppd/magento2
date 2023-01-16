@@ -1,4 +1,24 @@
-.elisa-events-container.with-default-styles{
+.with-default-styles.elisa-events-wrapper {
+    margin: 10px 0;
+    padding: 10px 0;
+}
+
+.with-default-styles.elisa-events-wrapper:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.with-default-styles.elisa-events-wrapper:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.with-default-styles > h2 {
+    font-weight: 600;
+    margin: 0 0 10px;
+}
+
+.with-default-styles > .elisa-events-container {
     display: grid;
     gap: 25px;
     grid-template-columns: auto auto auto;
@@ -60,7 +80,7 @@
 and (min-device-width: 320px)
 and (max-device-width: 480px)
 and (-webkit-min-device-pixel-ratio: 2) {
-    .elisa-events-container.with-default-styles{
+    .with-default-styles > .elisa-events-container {
         display: grid;
         gap: 25px;
         grid-template-columns: auto;
@@ -69,19 +89,19 @@ and (-webkit-min-device-pixel-ratio: 2) {
 }
 
 @media only screen and (max-width: 768px) {
-    .elisa-events-container.with-default-styles{
+    .with-default-styles > .elisa-events-container {
         grid-template-columns: repeat(1, 1fr) !important;
     }
 }
 
 @media only screen and (min-width: 768px) {
-    .elisa-events-container.with-default-styles{
+    .with-default-styles > .elisa-events-container {
         grid-template-columns: repeat(2, 1fr) !important;
     }
 }
 
 @media only screen and (min-width: 992px) {
-    .elisa-events-container.with-default-styles{
+    .with-default-styles > .elisa-events-container {
         grid-template-columns: repeat(3, 1fr) !important;
     }
 }

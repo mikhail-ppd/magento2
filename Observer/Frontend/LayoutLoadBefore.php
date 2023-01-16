@@ -35,6 +35,11 @@ class LayoutLoadBefore implements ObserverInterface
 
         /** @var \Magento\Framework\View\LayoutInterface $layout */
         $layout = $observer->getData('layout');
+
+        if ($this->config->isOnSiteEventsActive()) {
+            $layout->getUpdate()->addHandle('elisa_event_styles');
+        }
+
         $handles = $layout->getUpdate()->getHandles();
 
         if (!$this->isAllowedForLayout($handles)) {
