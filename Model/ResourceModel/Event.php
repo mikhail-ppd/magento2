@@ -23,7 +23,7 @@ class Event extends AbstractDb
     /**
      * @param Json $jsonSerializer
      * @param Context $context
-     * @param $connectionName
+     * @param string|null $connectionName
      */
     public function __construct(Json $jsonSerializer, Context $context, $connectionName = null)
     {
