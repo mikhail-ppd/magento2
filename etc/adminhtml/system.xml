@@ -19,5 +19,79 @@
                 </field>
             </group>
         </section>
+        <section id="elisa_on_site" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>ELISA On-Site</label>
+            <tab>elisa</tab>
+            <resource>Elisa_ProductApi::onsite_settings</resource>
+            <group id="general" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                <attribute type="expanded">1</attribute>
+                <label>General</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable On-Site Live Widgets</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="page_uid" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>ID</label>
+                    <validate>required-entry validate-digits validate-greater-than-zero</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <comment><![CDATA[As provided by ELISA]]></comment>
+                </field>
+                <field id="disabled_handle_masks" translate="label" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Disabled Layout Handles</label>
+                    <comment>
+                        <![CDATA[
+                            If any handle is present in current layout, then the on-site ELISA live widgets will be disabled.
+                            <br/><br/>One per line.
+                            <br/><br/>Wildcard * can be used after each segment in a handle.
+                            <br/><br/>
+                            Example:<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;customer_*<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;checkout_*<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;checkout_cart_index<br/><br/>
+                            Default value should be sufficient to get started.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="events" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <attribute type="expanded">1</attribute>
+                <label>Events</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Event Widgets</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            It is possible to display past, current and planned events on any page that supports Magento Widgets.
+                            <br/><br/>Go to Content > Widgets on your Magento Admin Panel and create widget of type "ELISA Events".
+                            <br/>You can also add our widget in your CMS Blocks and Pages by inserting a Magento Widget and choosing our widget type.
+                        ]]>
+                    </comment>
+                </field>
+                <field id="api_token" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Token</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <comment><![CDATA[As provided by ELISA]]></comment>
+                </field>
+                <field id="api_endpoint" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>API Endpoint</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <comment><![CDATA[Default value should be sufficient to get started.]]></comment>
+                </field>
+                <depends>
+                    <field id="elisa_on_site/general/active">1</field>
+                </depends>
+            </group>
+        </section>
     </system>
 </config>

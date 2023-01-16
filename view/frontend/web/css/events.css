@@ -1,0 +1,87 @@
+.elisa-events-container.with-default-styles{
+    display: grid;
+    gap: 25px;
+    grid-template-columns: auto auto auto;
+    padding: 10px 0;
+}
+
+.with-default-styles p.date {
+    font-size: 75%;
+}
+
+.with-default-styles .gg-play-button {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    font-style: normal;
+    height: 22px;
+    justify-content: center;
+    position: relative;
+}
+
+.with-default-styles .gg-play-button::before {
+    border-bottom: 6px solid transparent;
+    border-left: 9px solid;
+    border-top: 6px solid transparent;
+    box-sizing: border-box;
+    content: "";
+    display: block;
+    margin-right: 5px;
+}
+
+.with-default-styles.no-button-label .gg-play-button::before {
+    margin-right: inherit;
+}
+
+.with-default-styles button.elisa-play-button.play.button {
+    background-color: #fff;
+    border-radius: 20px;
+    border: solid 2px transparent;
+    color: #000000;
+    margin-bottom: 11%;
+    margin-left: 5%;
+    padding: 7px 20px;
+}
+
+.with-default-styles button.elisa-play-button.play.button:hover {
+    cursor: pointer;
+    border: solid 2px #000000;
+}
+
+.with-default-styles .elisa-image {
+    margin-bottom: -16%;
+}
+
+.with-default-styles .elisa-image img {
+    width: 100%;
+}
+
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 480px)
+and (-webkit-min-device-pixel-ratio: 2) {
+    .elisa-events-container.with-default-styles{
+        display: grid;
+        gap: 25px;
+        grid-template-columns: auto;
+        padding: 10px 0;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .elisa-events-container.with-default-styles{
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .elisa-events-container.with-default-styles{
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .elisa-events-container.with-default-styles{
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}

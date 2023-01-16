@@ -6,6 +6,11 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="elisa_on_site">
+        <job name="refresh_events" instance="Elisa\ProductApi\Model\Cron\Events" method="refresh">
+            <schedule>*/1 * * * *</schedule>
+        </job>
+    </group>
     <group id="elisa_tracker">
         <job name="tracker_mview_update" instance="Elisa\ProductApi\Model\Cron\Mview\GroupProcessor" method="updateMviews">
             <schedule>* * * * *</schedule>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <elisa_on_site>
+            <general>
+                <active>0</active>
+                <disabled_handle_masks><![CDATA[customer_*
+checkout_*]]></disabled_handle_masks>
+                <page_uid/>
+            </general>
+            <events>
+                <active>0</active>
+                <api_endpoint>https://europe-west1-elisashop-a7b5f.cloudfunctions.net/shopApi/widget/liveEventInfo</api_endpoint>
+                <api_token/>
+            </events>
+        </elisa_on_site>
+    </default>
+</config>

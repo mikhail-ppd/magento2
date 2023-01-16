@@ -6,6 +6,12 @@
             <resource ref="Elisa_ProductApi::cart_create" />
         </resources>
     </route>
+    <route url="/V1/elisa/event/refresh" method="GET">
+        <service class="Elisa\ProductApi\Api\EventManagementInterface" method="refreshEvents"/>
+        <resources>
+            <resource ref="Elisa_ProductApi::events" />
+        </resources>
+    </route>
     <route url="/V1/elisa/order/:timestamp/" method="GET">
         <service class="Elisa\ProductApi\Api\OrderManagementInterface" method="getList"/>
         <resources>
