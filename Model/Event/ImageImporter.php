@@ -89,9 +89,9 @@ class ImageImporter
         }
 
         try {
-            $uri = \Laminas\Uri\UriFactory::factory('');
+            $uri = \Laminas\Uri\UriFactory::factory($imageUrl);
         }catch (\Throwable $e) {
-            $uri = \Zend\Uri\UriFactory::factory('');
+            $uri = \Zend\Uri\UriFactory::factory($imageUrl);
         }
 
         $uriPath = $uri->getPath();
