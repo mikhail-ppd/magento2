@@ -31,7 +31,7 @@ class ImageImporter
     public function __construct(
         DirectoryList $directoryList,
         CurlFactory $httpClientFactory,
-        File $fileIo,
+        File $fileIo
     ) {
         $this->directoryList = $directoryList;
         $this->httpClientFactory = $httpClientFactory;
