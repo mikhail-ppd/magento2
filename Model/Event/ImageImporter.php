@@ -88,7 +88,12 @@ class ImageImporter
             $this->fileIo->mkdir($absoluteFolderPath);
         }
 
-        $uri = \Laminas\Uri\UriFactory::factory($imageUrl);
+        try {
+            $uri = \Laminas\Uri\UriFactory::factory('');
+        }catch (\Throwable $e) {
+            $uri = \Zend\Uri\UriFactory::factory('');
+        }
+
         $uriPath = $uri->getPath();
         $saveFileName = $prefix . '-' . md5($uriPath); //phpcs:ignore
 
