@@ -92,12 +92,19 @@
                     </option>
                 </options>
             </parameter>
-            <parameter name="use_default_styles" sort_order="70" required="false" xsi:type="select" visible="true"
-                       source_model="Magento\Config\Model\Config\Source\Yesno">
+            <parameter name="use_default_styles" sort_order="70" required="false" xsi:type="select" visible="true">
                 <label>Use Default Styles</label>
                 <description>
                     <![CDATA[Disable this if your development team has styled our widget in your theme.]]>
                 </description>
+                <options>
+                    <option name="no" value="0" selected="false">
+                        <label>No</label>
+                    </option>
+                    <option name="yes" value="1" selected="true">
+                        <label>Yes</label>
+                    </option>
+                </options>
             </parameter>
             <parameter name="template" sort_order="1000" xsi:type="select" required="true" visible="true">
                 <label>Template</label>
