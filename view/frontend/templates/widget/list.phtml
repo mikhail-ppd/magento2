@@ -14,20 +14,20 @@ $events = $block->getEvents();
                     <div class="elisa-image">
                         <img alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
                              src="<?= $escaper->escapeUrl($block->getCoverPhotoUrl($event)) ?>"/>
+                        <?php if ($block->isPlayable($event)): ?>
+                            <?php
+                            $playButtonLabel = $block->getPlayButtonLabel();
+                            $playButtonAlt = $playButtonLabel ?: "Open";
+                            ?>
+                            <button type="button"
+                                    data-elisa-event-id="<?= $escaper->escapeHtmlAttr($event->getEventId()) ?>"
+                                    data-elisa-campaign-id="<?= $escaper->escapeHtmlAttr($event->getCampaignId()) ?>"
+                                    class="elisa-play-button play button" name="play"
+                                    title="<?= $escaper->escapeHtmlAttr(__($playButtonAlt)) ?>">
+                                <i class="gg-play-button"><?= $escaper->escapeHtml(__($playButtonLabel)) ?></i>
+                            </button>
+                        <?php endif; ?>
                     </div>
-                    <?php if ($block->isPlayable($event)): ?>
-                        <?php
-                        $playButtonLabel = $block->getPlayButtonLabel();
-                        $playButtonAlt = $playButtonLabel ?: "Open";
-                        ?>
-                        <button type="button"
-                                data-elisa-event-id="<?= $escaper->escapeHtmlAttr($event->getEventId()) ?>"
-                                data-elisa-campaign-id="<?= $escaper->escapeHtmlAttr($event->getCampaignId()) ?>"
-                                class="elisa-play-button play button" name="play"
-                                title="<?= $escaper->escapeHtmlAttr(__($playButtonAlt)) ?>">
-                            <i class="gg-play-button"><?= $escaper->escapeHtml(__($playButtonLabel)) ?></i>
-                        </button>
-                    <?php endif; ?>
                     <p class="date"><?= $escaper->escapeHtml($block->getStartTime($event)) ?></p>
                     <h4 class="title"><?= $escaper->escapeHtml($event->getName()) ?></h4>
                     <?php if ($description = $block->getDescription($event)): ?>
