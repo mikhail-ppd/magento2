@@ -99,14 +99,24 @@
             <parameter name="use_default_styles" sort_order="70" required="false" xsi:type="select" visible="true">
                 <label>Use Default Styles</label>
                 <description>
-                    <![CDATA[Disable this if your development team has styled our widget in your theme.]]>
+                    <![CDATA[
+                        Disable this if your development team has styled our widget in your theme.
+                        <br/>
+                        <br/>Enable to apply ELISA default styles, but alongside with your theme defaults.
+                        <br/>
+                        <br/>Use Strict Overrides to apply ELISA default styles strictly, overriding anything your theme has set.
+                        <br/>This option is ideal to get started quickly without having to worry about misalignment etc.
+                    ]]>
                 </description>
                 <options>
                     <option name="0" value="0">
                         <label>No</label>
                     </option>
-                    <option name="1" value="1" selected="true">
+                    <option name="1" value="1">
                         <label>Yes</label>
+                    </option>
+                    <option name="2" value="2" selected="true">
+                        <label>Yes, Strict Overrides</label>
                     </option>
                 </options>
             </parameter>

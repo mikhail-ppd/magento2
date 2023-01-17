@@ -60,8 +60,12 @@ class Event extends Template implements BlockInterface, IdentityInterface
     {
         $classes = [];
 
-        if ($this->isDefaultStylingUsed()) {
-            $classes[] = 'with-default-styles';
+        if ($mode = $this->getDefaultStylingMode()) {
+            if ($mode === 1) {
+                $classes[] = 'with-default-styles';
+            } else {
+                $classes[] = 'with-strict-default-styles';
+            }
         }
 
         if (!$this->getPlayButtonLabel()) {
@@ -93,7 +97,7 @@ class Event extends Template implements BlockInterface, IdentityInterface
         $key['limit'] = (int)$this->getData('limit');
         $key['date_format'] = (int)($this->getData('date_format') ?? \IntlDateFormatter::MEDIUM);
         $key['time_format'] = (int)($this->getData('time_format') ?? \IntlDateFormatter::SHORT);
-        $key['use_default_styles'] = $this->isDefaultStylingUsed();
+        $key['use_default_styles'] = $this->getDefaultStylingMode();
         $key['show_description'] = $this->isDescriptionShown();
         $key['play_button_label'] = $this->getPlayButtonLabel() ?? '';
         $key['title'] = $this->getTitle() ?? '';
@@ -272,13 +276,13 @@ class Event extends Template implements BlockInterface, IdentityInterface
     }
 
     /**
-     * Whether default elisa widget styles are used
+     * Get default styling mode
      *
-     * @return bool
+     * @return int
      */
-    private function isDefaultStylingUsed(): bool
+    private function getDefaultStylingMode(): int
     {
-        return (bool)($this->getData('use_default_styles') ?? true);
+        return (int)($this->getData('use_default_styles') ?? 0);
     }
 
     /**
