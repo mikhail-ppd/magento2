@@ -10,7 +10,7 @@ checkout_*]]></disabled_handle_masks>
             </general>
             <events>
                 <active>0</active>
-                <api_endpoint>https://europe-west1-elisashop-a7b5f.cloudfunctions.net/shopApi/widget/liveEventInfo</api_endpoint>
+                <api_endpoint>https://onsite.shop.elisa.io/shopApi/widget/liveEventInfo</api_endpoint>
                 <api_token/>
             </events>
         </elisa_on_site>
