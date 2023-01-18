@@ -53,7 +53,14 @@ class LayoutLoadBefore implements ObserverInterface
         $this->pageConfig->addRemotePageAsset(
             "https://storage.googleapis.com/elisa-test-cdn.elisa.io/widget-$pageUid.js?ver=0.0.1",
             'js',
-            ["src_type" => "url", 'attributes' => ['id' => 'elisa-js']],
+            [
+                "src_type" => "url",
+                'attributes' => [
+                    'id' => 'elisa-js',
+                    'async' => 'true',
+                    'crossorigin' => 'anonymous'
+                ]
+            ],
             "elisa_on_site_init_script"
         );
     }
