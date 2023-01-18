@@ -47,4 +47,108 @@
             <column name="product_id"/>
         </index>
     </table>
+    <table name="elisa_productsapi_event" resource="default" engine="innodb" comment="Caches ELISA events">
+        <column xsi:type="varchar"
+                name="event_id"
+                length="50"
+                nullable="false"
+                comment="Event ID"/>
+        <column xsi:type="varchar"
+                name="campaign_id"
+                length="50"
+                nullable="false"
+                comment="Campaign ID"/>
+        <column xsi:type="varchar"
+                name="page_uid"
+                length="50"
+                nullable="false"
+                comment="Page UID"/>
+        <column xsi:type="varchar"
+                name="cover_photo_path"
+                length="500"
+                nullable="true"
+                comment="Cover Photo Media Path"/>
+        <column xsi:type="varchar"
+                name="cover_photo_remote_url"
+                length="500"
+                nullable="false"
+                comment="Cover Photo Remote URL"/>
+        <column xsi:type="int"
+                name="deadline_timestamp"
+                padding="5"
+                unsigned="true"
+                nullable="false"
+                comment="Event Order Deadline DateTime in UTC Timestamp"/>
+        <column xsi:type="text"
+                name="description"
+                nullable="false"
+                comment="Event Description"/>
+        <column xsi:type="int"
+                name="live_start_timestamp"
+                padding="5"
+                unsigned="true"
+                nullable="false"
+                comment="Event Live DateTime in UTC Timestamp"/>
+        <column xsi:type="varchar"
+                name="name"
+                length="500"
+                nullable="true"
+                comment="Name"/>
+        <column xsi:type="varchar"
+                name="name_short"
+                length="250"
+                nullable="true"
+                comment="Shorter Name"/>
+        <column xsi:type="int"
+                name="start_timestamp"
+                padding="5"
+                unsigned="true"
+                nullable="false"
+                comment="Event Start DateTime in UTC Timestamp"/>
+        <column xsi:type="varchar"
+                name="status"
+                length="50"
+                nullable="false"
+                comment="Event Status: vod/live/planned"/>
+        <column xsi:type="varchar"
+                name="tags"
+                length="255"
+                nullable="true"
+                comment="CSV of tags for the event. Kept at 255 chars to allow index"/>
+        <column xsi:type="timestamp"
+                name="created_at"
+                on_update="false"
+                nullable="false"
+                default="CURRENT_TIMESTAMP"
+                comment="Record Created At"/>
+        <column xsi:type="timestamp"
+                name="updated_at"
+                on_update="true"
+                nullable="false"
+                default="CURRENT_TIMESTAMP"
+                comment="Record Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="event_id"/>
+        </constraint>
+        <index referenceId="ELISA_PRODUCTSAPI_EVENT_PAGE_UID_STATUS_TAGS_START_TIMESTAMP" indexType="btree">
+            <column name="page_uid"/>
+            <column name="status"/>
+            <column name="tags"/>
+            <column name="start_timestamp"/>
+        </index>
+        <index referenceId="ELISA_PRODUCTSAPI_EVENT_PAGE_UID_TAGS_START_TIMESTAMP" indexType="btree">
+            <column name="page_uid"/>
+            <column name="tags"/>
+            <column name="start_timestamp"/>
+        </index>
+        <index referenceId="ELISA_PRODUCTSAPI_EVENT_PAGE_UID_STATUS_START_TIMESTAMP" indexType="btree">
+            <column name="page_uid"/>
+            <column name="status"/>
+            <column name="start_timestamp"/>
+        </index>
+        <index referenceId="ELISA_PRODUCTSAPI_EVENT_PAGE_UID_START_TIMESTAMP" indexType="btree">
+            <column name="page_uid"/>
+            <column name="start_timestamp"/>
+        </index>
+    </table>
 </schema>

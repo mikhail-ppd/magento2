@@ -5,6 +5,8 @@ namespace Elisa\ProductApi\Block\Checkout\Cart;
 /**
  * Why this and not etc/frontend/sections.xml targeting "cartassign/index/index"?
  * That action is merely a redirect and will never trigger the customer-data section update on frontend
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class ReloadMiniCart extends \Magento\Framework\View\Element\Template
 {
@@ -12,6 +14,7 @@ class ReloadMiniCart extends \Magento\Framework\View\Element\Template
 
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _toHtml()
     {

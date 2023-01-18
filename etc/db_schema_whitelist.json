@@ -38,5 +38,33 @@
         "constraint": {
             "PRIMARY": true
         }
+    },
+    "elisa_productsapi_event": {
+        "column": {
+            "event_id": true,
+            "campaign_id": true,
+            "page_uid": true,
+            "cover_photo_path": true,
+            "cover_photo_remote_url": true,
+            "deadline_timestamp": true,
+            "description": true,
+            "live_start_timestamp": true,
+            "name": true,
+            "name_short": true,
+            "start_timestamp": true,
+            "status": true,
+            "tags": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "ELISA_PRODUCTSAPI_EVENT_PAGE_UID_STATUS_TAGS_START_TIMESTAMP": true,
+            "ELISA_PRODUCTSAPI_EVENT_PAGE_UID_TAGS_START_TIMESTAMP": true,
+            "ELISA_PRODUCTSAPI_EVENT_PAGE_UID_START_TIMESTAMP": true,
+            "ELISA_PRODUCTSAPI_EVENT_PAGE_UID_STATUS_START_TIMESTAMP": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
     }
 }

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="elisa_event" class="Elisa\ProductApi\Block\Widget\Event"
+            placeholder_image="Elisa_ProductApi::images/elisa-events.png" ttl="86400">
+        <label>ELISA Events</label>
+        <description>List past, current and planned ELISA events.</description>
+        <parameters>
+            <parameter name="title" sort_order="5" required="false" xsi:type="text" visible="true">
+                <label>Heading</label>
+                <description>Leave empty to hide heading.</description>
+            </parameter>
+            <parameter name="status" sort_order="10" required="false" xsi:type="multiselect" visible="true"
+                       source_model="Elisa\ProductApi\Model\Data\OptionSource\EventStatuses">
+                <label>Event Status</label>
+                <description>
+                    <![CDATA[
+                        Status that will limit the events which this widget will show.
+                        <br/>Select none to ignore status.
+                    ]]>
+                </description>
+            </parameter>
+            <parameter name="tags" sort_order="25" required="false" xsi:type="multiselect" visible="true"
+                       source_model="Elisa\ProductApi\Model\Data\OptionSource\EventTags">
+                <label>Tags</label>
+                <description>
+                    <![CDATA[
+                        Tags that will limit the events which this widget will show.
+                        <br/>Select none to ignore tags.
+                    ]]>
+                </description>
+            </parameter>
+            <parameter name="limit" sort_order="30" required="true" xsi:type="text" visible="true">
+                <label>Maximum Items</label>
+                <description>Maximum number of events to display. 0 means display all.</description>
+                <value>3</value>
+            </parameter>
+            <parameter name="sort_order" sort_order="40" required="false" xsi:type="select" visible="true">
+                <label>Sort Order</label>
+                <options>
+                    <option name="desc" value="desc" selected="true">
+                        <label>Newest Event First</label>
+                    </option>
+                    <option name="asc" value="asc">
+                        <label>Oldest Event First</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="play_button_label" sort_order="45" required="false" xsi:type="text" visible="true">
+                <label>Play button label</label>
+                <description>Leave empty to show only icon.</description>
+                <value>Play</value>
+            </parameter>
+            <parameter name="date_format" sort_order="50" required="false" xsi:type="select" visible="true">
+                <label>Localized Date Format</label>
+                <options>
+                    <option name="3" value="3">
+                        <label>Most abbreviated style, only essential data (12/13/52)</label>
+                    </option>
+                    <option name="2" value="2" selected="true">
+                        <label>Medium style (Jan 12, 1952)</label>
+                    </option>
+                    <option name="1" value="1">
+                        <label>Long style (January 12, 1952)</label>
+                    </option>
+                    <option name="0" value="0">
+                        <label>Completely specified style (Tuesday, April 12, 1952 AD)</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="time_format" sort_order="51" required="false" xsi:type="select" visible="true">
+                <label>Localized Time Format</label>
+                <options>
+                    <option name="3" value="3" selected="true">
+                        <label>Most abbreviated style, only essential data (3:30pm)</label>
+                    </option>
+                    <option name="2" value="2">
+                        <label>Medium style (3:30:42pm)</label>
+                    </option>
+                    <option name="1" value="1">
+                        <label>Long style (3:30:32pm PST)</label>
+                    </option>
+                    <option name="0" value="0">
+                        <label>Completely specified style (3:30:42pm Pacific Standard Time)</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="show_description" sort_order="60" required="false" xsi:type="select" visible="true">
+                <label>Show Description</label>
+                <options>
+                    <option name="0" value="0" selected="true">
+                        <label>No</label>
+                    </option>
+                    <option name="1" value="1">
+                        <label>Yes</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="use_default_styles" sort_order="70" required="false" xsi:type="select" visible="true">
+                <label>Use Default Styles</label>
+                <description>
+                    <![CDATA[
+                        Disable this if your development team has styled our widget in your theme.
+                        <br/>
+                        <br/>Enable to apply ELISA default styles, but alongside with your theme defaults.
+                        <br/>
+                        <br/>Use Strict Overrides to apply ELISA default styles strictly, overriding anything your theme has set.
+                        <br/>This option is ideal to get started quickly without having to worry about misalignment etc.
+                    ]]>
+                </description>
+                <options>
+                    <option name="0" value="0">
+                        <label>No</label>
+                    </option>
+                    <option name="1" value="1">
+                        <label>Yes</label>
+                    </option>
+                    <option name="2" value="2" selected="true">
+                        <label>Yes, Strict Overrides</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="template" sort_order="1000" xsi:type="select" required="true" visible="true">
+                <label>Template</label>
+                <options>
+                    <option name="default" value="widget/list.phtml" selected="true">
+                        <label>Default List Template</label>
+                    </option>
+                </options>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

@@ -13,6 +13,12 @@ interface VersionInfoInterface
      * @return string Semantic Version of the Elisa Cart Integration API
      */
     public function getCartApi(): string;
+    /**
+     * Get Events API version
+     *
+     * @return string Semantic Version of the Elisa Cart Integration API
+     */
+    public function getEventsApi(): string;
 
     /**
      * Get Order API version
@@ -35,6 +41,15 @@ interface VersionInfoInterface
      * @return VersionInfoInterface
      */
     public function setCartApi(string $value): VersionInfoInterface;
+
+    /**
+     * Set Events API version
+     *
+     * @param string $value
+     * @return VersionInfoInterface
+     */
+    public function setEventsApi(string $value): VersionInfoInterface;
+
 
     /**
      * Set Order API version

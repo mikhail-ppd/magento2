@@ -7,16 +7,21 @@
                 <resource id="Elisa_ProductApi::products" title="Elisa API - Products"
                           translate="title" sortOrder="110">
                     <resource id="Elisa_ProductApi::products_by_timestamp" title="Get products by timestamp"
-                              translate="title" sortOrder="10" />
+                              translate="title" sortOrder="10"/>
                     <resource id="Elisa_ProductApi::cart_create" title="Custom cart create"
-                              translate="title" sortOrder="20" />
+                              translate="title" sortOrder="20"/>
+                    <resource id="Elisa_ProductApi::events" title="Refresh events"
+                              translate="title" sortOrder="25"/>
                     <resource id="Elisa_ProductApi::get_orders" title="Get orders by timestamp"
-                              translate="title" sortOrder="30" />
+                              translate="title" sortOrder="30"/>
                 </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Elisa_ProductApi::settings" title="ELISA Settings" sortOrder="10000"/>
+                            <resource id="Elisa_ProductApi::settings" title="ELISA Settings" sortOrder="10000">
+                                <resource id="Elisa_ProductApi::onsite_settings" title="On-Site Settings"
+                                          sortOrder="100"/>
+                            </resource>
                         </resource>
                     </resource>
                 </resource>

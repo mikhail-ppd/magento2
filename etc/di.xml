@@ -17,14 +17,18 @@
     <preference for="Elisa\ProductApi\Api\Data\ElisaProduct\SearchResultsInterface"
                 type="Elisa\ProductApi\Model\Data\ElisaProduct\SearchResults"/>
     <preference for="Elisa\ProductApi\Api\Data\ElisaProductInterface" type="Elisa\ProductApi\Model\Data\ElisaProduct"/>
+    <preference for="Elisa\ProductApi\Api\Data\EventInterface" type="Elisa\ProductApi\Model\Event"/>
     <preference for="Elisa\ProductApi\Api\Data\ProductTrackerInterface" type="Elisa\ProductApi\Model\ProductTracker"/>
     <preference for="Elisa\ProductApi\Api\Data\VersionInfoInterface" type="Elisa\ProductApi\Model\Data\VersionInfo"/>
+    <preference for="Elisa\ProductApi\Api\EventManagementInterface" type="Elisa\ProductApi\Model\EventManagement"/>
     <preference for="Elisa\ProductApi\Api\IntegrationManagementInterface"
                 type="Elisa\ProductApi\Model\IntegrationManagement"/>
     <preference for="Elisa\ProductApi\Api\OrderManagementInterface" type="Elisa\ProductApi\Model\OrderManagement"/>
     <preference for="Elisa\ProductApi\Api\ProductManagementInterface" type="Elisa\ProductApi\Model\ProductManagement"/>
     <preference for="Elisa\ProductApi\Api\QuoteItemHandlerProviderInterface"
                 type="Elisa\ProductApi\Model\QuoteItemHandler\Provider"/>
+    <preference for="\Elisa\ProductApi\Api\Service\GetEventsInterface"
+                type="Elisa\ProductApi\Model\Service\GetEvents"/>
     <preference for="Elisa\ProductApi\Api\SupportedProductTypesProviderInterface"
                 type="Elisa\ProductApi\Model\SupportedProductTypesProvider"/>
 
@@ -33,6 +37,11 @@
             <argument name="quoteItemHandlerProvider"
                       xsi:type="object">Elisa\ProductApi\Api\QuoteItemHandlerProviderInterface\Proxy
             </argument>
+            <argument name="logger" xsi:type="object">Elisa\ProductApi\Model\Logger</argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Model\EventManagement">
+        <arguments>
             <argument name="logger" xsi:type="object">Elisa\ProductApi\Model\Logger</argument>
         </arguments>
     </type>
@@ -106,6 +115,11 @@
             </argument>
         </arguments>
     </type>
+    <type name="Elisa\ProductApi\Model\Service\GetEvents">
+        <arguments>
+            <argument name="logger" xsi:type="object">Elisa\ProductApi\Model\Logger</argument>
+        </arguments>
+    </type>
     <type name="Elisa\ProductApi\Model\StockDataBuilder\Composite">
         <arguments>
             <argument name="builders" xsi:type="array">
@@ -135,6 +149,7 @@
         <arguments>
             <argument name="data" xsi:type="array">
                 <item name="cart_api" xsi:type="string">1.0.0</item>
+                <item name="events_api" xsi:type="string">1.0.0</item>
                 <item name="order_api" xsi:type="string">1.0.0</item>
                 <item name="product_api" xsi:type="string">1.0.0</item>
             </argument>
