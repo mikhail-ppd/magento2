@@ -141,6 +141,16 @@
             </argument>
         </arguments>
     </type>
+    <type name="Elisa\ProductApi\Plugin\Framework\Mview\View\CollectionPlugin">
+        <arguments>
+            <argument name="configReader" xsi:type="object" shared="false">Magento\Framework\Mview\Config\Reader\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Elisa\ProductApi\Setup\Recurring">
+        <arguments>
+            <argument name="configReader" xsi:type="object" shared="false">Magento\Framework\Mview\Config\Reader\Proxy</argument>
+        </arguments>
+    </type>
     <type name="Magento\Framework\Mview\View\Collection">
         <plugin name="elisa_product_api" type="Elisa\ProductApi\Plugin\Framework\Mview\View\CollectionPlugin"/>
     </type>

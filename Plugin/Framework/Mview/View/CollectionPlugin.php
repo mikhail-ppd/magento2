@@ -2,6 +2,7 @@
 
 namespace Elisa\ProductApi\Plugin\Framework\Mview\View;
 
+use Magento\Framework\Config\ReaderInterface;
 use Magento\Framework\Mview\View\Collection;
 use Magento\Framework\Mview\View\State\CollectionFactory;
 
@@ -9,6 +10,8 @@ class CollectionPlugin
 {
     const ELISA_MVIEW_GROUP = 'elisa_product_tracker';
     const ELISA_MVIEW_ID = 'elisa_product_tracker';
+    /** @var ReaderInterface  */
+    protected $configReader;
 
     /**
      * @var CollectionFactory
@@ -17,10 +20,14 @@ class CollectionPlugin
 
     /**
      * @param CollectionFactory $mviewStatesFactory
+     * @param ReaderInterface $configReader
      */
-    public function __construct(\Magento\Framework\Mview\View\State\CollectionFactory $mviewStatesFactory)
-    {
+    public function __construct(
+        \Magento\Framework\Mview\View\State\CollectionFactory $mviewStatesFactory,
+        \Magento\Framework\Config\ReaderInterface $configReader
+    ) {
         $this->mviewStatesFactory = $mviewStatesFactory;
+        $this->configReader = $configReader;
     }
 
     /**
@@ -61,12 +68,22 @@ class CollectionPlugin
                 try {
                     $view = $view->load(self::ELISA_MVIEW_ID);
                 } catch (\InvalidArgumentException $exception) {
-                    //when running setup upgrade right after installing
-                    //this extension first-time, magento tries to remove unused triggers
-                    //however thr mview config loader still has the cached config
-                    //without our mview.xml contents, as the config loader initializes
-                    //its data in the constructor
-                    return $result;
+                    /**
+                     * Because of https://github.com/magento/magento2/issues/33802#issuecomment-899059404
+                     * During setup:upgrade we end up with a cached version of DeploymentConfig which is not the
+                     * one that is updated when app/etc/config.php is updated.
+                     * Unless and until M2 fixes this, working around using an inexpensive proxy to the config reader
+                     * with updated composition objects
+                     */
+                    $configData = $this->configReader->read();
+
+                    if ($configData[self::ELISA_MVIEW_ID]) {
+                        $viewData = $configData[self::ELISA_MVIEW_ID];
+                        $view->setId($viewData['view_id']);
+                        $view->setData($viewData);
+                    } else {
+                        throw $exception;
+                    }
                 }
 
                 $states = $this->mviewStatesFactory->create();
