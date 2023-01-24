@@ -23,9 +23,9 @@ class CollectionPlugin
         $this->mviewStatesFactory = $mviewStatesFactory;
     }
 
-
     /**
      * This is due to a bug in \Magento\Framework\Mview\View\Collection
+     *
      * More precisely in \Magento\Framework\Mview\View\Collection::getOrderedViewIds,
      *
      *     $orderedViewIds += array_diff(array_keys($this->config->getViews()), $orderedViewIds);
@@ -58,7 +58,16 @@ class CollectionPlugin
             if (!$items) {
                 $view = $subject->getNewEmptyItem();
 
-                $view = $view->load(self::ELISA_MVIEW_ID);
+                try {
+                    $view = $view->load(self::ELISA_MVIEW_ID);
+                } catch (\InvalidArgumentException $exception) {
+                    //when running setup upgrade right after installing
+                    //this extension first-time, magento tries to remove unused triggers
+                    //however thr mview config loader still has the cached config
+                    //without our mview.xml contents, as the config loader initializes
+                    //its data in the constructor
+                    return $result;
+                }
 
                 $states = $this->mviewStatesFactory->create();
 
