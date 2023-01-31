@@ -208,28 +208,34 @@ class ProductManagement implements ProductManagementInterface
         $elisaProduct = $this->dataFactory->getNewElisaProduct();
         $elisaProduct->setProductId($product->getId());
 
-        if (!$this->productValidator->execute($product, $parentProduct)) {
-            $elisaProduct->setValid(false);
-            return $elisaProduct;
-        }
-
-        $elisaProduct->setValid(true);
-
-        $productData = $this->dataFactory->getNewElisaProductData();
-        $childrenProducts = $this->productDataBuilder->execute($productData, $product, $parentProduct);
-        $elisaProduct->setProductData($productData);
-        $this->stockDataBuilder->execute($elisaProduct, $product);
-
-        if ($childrenProducts) {
-            $childrenElisaProducts = [];
-
-            foreach ($childrenProducts as $childProduct) {
-                if ($results = $this->processCatalogProduct($childProduct, $product)) {
-                    $childrenElisaProducts[] = $results;
-                }
+        try {
+            if (!$this->productValidator->execute($product, $parentProduct)) {
+                $elisaProduct->setValid(false);
+                return $elisaProduct;
             }
 
-            $elisaProduct->setChildren($childrenElisaProducts);
+            $elisaProduct->setValid(true);
+
+            $productData = $this->dataFactory->getNewElisaProductData();
+            $childrenProducts = $this->productDataBuilder->execute($productData, $product, $parentProduct);
+            $elisaProduct->setProductData($productData);
+            $this->stockDataBuilder->execute($elisaProduct, $product);
+
+            if ($childrenProducts) {
+                $childrenElisaProducts = [];
+
+                foreach ($childrenProducts as $childProduct) {
+                    if ($results = $this->processCatalogProduct($childProduct, $product)) {
+                        $childrenElisaProducts[] = $results;
+                    }
+                }
+
+                $elisaProduct->setChildren($childrenElisaProducts);
+            }
+        } catch (\Throwable $e) {
+            $elisaProduct->setValid(false);
+            $elisaProduct->setErrorMessage($e->getMessage());
+            $elisaProduct->setErrorTrace($e->getTraceAsString());
         }
 
         return $elisaProduct;
