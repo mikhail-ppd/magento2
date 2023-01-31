@@ -10,6 +10,8 @@ use Magento\Framework\DataObject;
 class ElisaProduct extends DataObject implements ElisaProductInterface
 {
     private const KEY_CHILDREN = 'children';
+    private const KEY_ERROR_MESSAGE = 'error_message';
+    private const KEY_ERROR_TRACE = 'error_trace';
     private const KEY_PRODUCT_DATA = 'product_data';
     private const KEY_PRODUCT_ID = 'product_id';
     private const KEY_PRODUCT_TYPE_WITH_QTY = 'product_type_with_qty';
@@ -22,6 +24,22 @@ class ElisaProduct extends DataObject implements ElisaProductInterface
     public function getChildren(): ?array
     {
         return $this->getData(self::KEY_CHILDREN);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getErrorMessage(): ?string
+    {
+        return $this->getData(self::KEY_ERROR_MESSAGE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getErrorTrace(): ?string
+    {
+        return $this->getData(self::KEY_ERROR_TRACE);
     }
 
     /**
@@ -70,6 +88,22 @@ class ElisaProduct extends DataObject implements ElisaProductInterface
     public function setChildren(array $value): ElisaProductInterface
     {
         return $this->setData(self::KEY_CHILDREN, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setErrorMessage(string $value): ElisaProductInterface
+    {
+        return $this->setData(self::KEY_ERROR_MESSAGE, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setErrorTrace(string $value): ElisaProductInterface
+    {
+        return $this->setData(self::KEY_ERROR_TRACE, $value);
     }
 
     /**

@@ -11,6 +11,20 @@ use Elisa\ProductApi\Api\Data\ElisaProduct\StockDataInterface;
 interface ElisaProductInterface
 {
     /**
+     * Get Error Message
+     *
+     * @return string|null
+     */
+    public function getErrorMessage(): ?string;
+
+    /**
+     * Get Error Trace
+     *
+     * @return string|null
+     */
+    public function getErrorTrace(): ?string;
+
+    /**
      * Get Product Data
      *
      * @return \Elisa\ProductApi\Api\Data\ElisaProduct\ProductDataInterface|null
@@ -59,6 +73,22 @@ interface ElisaProductInterface
      * @return ElisaProductInterface
      */
     public function setChildren(array $value): ElisaProductInterface;
+
+    /**
+     * Set Error Message
+     *
+     * @param string $value
+     * @return ElisaProductInterface
+     */
+    public function setErrorMessage(string $value): ElisaProductInterface;
+
+    /**
+     * Set Error Trace
+     *
+     * @param string $value
+     * @return ElisaProductInterface
+     */
+    public function setErrorTrace(string $value): ElisaProductInterface;
 
     /**
      * Set Product Data
