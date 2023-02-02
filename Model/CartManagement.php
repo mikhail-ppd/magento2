@@ -4,10 +4,13 @@ namespace Elisa\ProductApi\Model;
 
 use Elisa\ProductApi\Api\CartManagementInterface;
 use Elisa\ProductApi\Api\QuoteItemHandlerProviderInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Phrase;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
 use Magento\Framework\UrlInterface;
@@ -50,7 +53,7 @@ class CartManagement implements CartManagementInterface
     protected $requestToQuoteResource;
     /** @var SerializerInterface */
     protected $serializer;
-    /** @var StoreManagerInterface  */
+    /** @var StoreManagerInterface */
     protected $storeManager;
     /** @var UrlInterface */
     protected $urlBuilder;
@@ -152,6 +155,7 @@ class CartManagement implements CartManagementInterface
     public function setCartRequestToQuote(CartRequest $cartRequest, Quote $quote): Quote
     {
         $productData = $cartRequest->getDataByPath('cart_data/products');
+        $quoteAdjustmentMessages = [];
 
         if ($productData) {
             if ($quote->getAllItems()) {
@@ -162,10 +166,9 @@ class CartManagement implements CartManagementInterface
                 }
             }
 
-            if ($storeCode = $cartRequest->getData('store_code')) {
-                $storeId = $this->storeManager->getStore($storeCode)->getId();
-                $quote->setStoreId($storeId);
-            }
+            $storeCode = $cartRequest->getData('store_code');
+            $storeId = $this->storeManager->getStore($storeCode)->getId();
+            $quote->setStoreId($storeId);
 
             foreach ($productData as $productDatum) {
                 $requestProduct = $this->dataObjectFactory->create(['data' => $productDatum]);
@@ -190,6 +193,12 @@ class CartManagement implements CartManagementInterface
                     throw $e;
                 }
 
+                $quoteAdjustmentMessages[] = $this->getAdjustmentMessage($product, $buyRequest, $requestProduct);
+
+                if (!$buyRequest->getData('qty')) {
+                    continue;
+                }
+
                 $result = $quote->addProduct($product, $buyRequest);
 
                 if (is_string($result)) {
@@ -204,6 +213,7 @@ class CartManagement implements CartManagementInterface
         $quote->getShippingAddress()->setCollectShippingRates(true);
         $quote->collectTotals();
         $this->quoteRepository->save($quote);
+        $quote->setData('elisa_adjustment_messages', $quoteAdjustmentMessages);
 
         $usages = $cartRequest->getUsages();
         $cartRequest->setUsages($usages + 1);
@@ -215,6 +225,51 @@ class CartManagement implements CartManagementInterface
         $this->requestToQuoteResource->save($requestToQuote);
 
         return $quote;
+    }
+
+    /**
+     * Gets messages for qty adjustments
+     *
+     * @param ProductInterface $product
+     * @param DataObject $buyRequest
+     * @param DataObject $requestProduct
+     * @return Phrase
+     */
+    private function getAdjustmentMessage(
+        ProductInterface $product,
+        DataObject $buyRequest,
+        DataObject $requestProduct
+    ): ?Phrase {
+        $qtyToAdd = (float)$buyRequest->getData('qty');
+
+        if ($qtyToAdd === 0.0) {
+            return __(
+                "Unfortunately %1 is no longer available.",
+                $buyRequest->getData('child_product_name') ?? $product->getName()
+            );
+        } else {
+            $elisaRequestedQty = (float)$requestProduct->getData('qty') ?? 1;
+
+            if ($qtyToAdd < $elisaRequestedQty) {
+                return __(
+                    "%1 of %2 is not available."
+                    . " The maximum quantity of %3 has instead been applied.",
+                    $elisaRequestedQty,
+                    $buyRequest->getData('child_product_name') ?? $product->getName(),
+                    $qtyToAdd
+                );
+            } elseif ($qtyToAdd > $elisaRequestedQty) {
+                return __(
+                    "Only %1 of %2 cannot be ordered."
+                    . " The minimum quantity of %3 has instead been applied.",
+                    $elisaRequestedQty,
+                    $buyRequest->getData('child_product_name') ?? $product->getName(),
+                    $qtyToAdd
+                );
+            }
+        }
+
+        return null;
     }
 
     /**

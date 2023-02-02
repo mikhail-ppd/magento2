@@ -22,7 +22,7 @@ class Index extends Action implements HttpGetActionInterface
     protected $checkoutSession;
     /** @var StoreManagerInterface */
     protected $storeManager;
-    /** @var StoreSwitcherInterface  */
+    /** @var StoreSwitcherInterface */
     protected $storeSwitcher;
 
     /**
@@ -59,12 +59,20 @@ class Index extends Action implements HttpGetActionInterface
                 $cartRequest = $this->cartManagement->getCartRequestFromToken($token);
                 $quote = $this->checkoutSession->getQuote();
                 $quote = $this->cartManagement->setCartRequestToQuote($cartRequest, $quote);
+
+                $adjustmentMessages = array_filter($quote->getData('elisa_adjustment_messages') ?? []);
+
+                foreach ($adjustmentMessages as $adjustmentMessage) {
+                    $this->messageManager->addNoticeMessage($adjustmentMessage);
+                }
+
                 $this->checkoutSession->setQuoteId($quote->getId());
                 $items = $quote->getAllVisibleItems();
                 /** @var Item $item */
                 $item = end($items);
                 $this->checkoutSession->setLastAddedProductId($item->getProductId());
-                $url = $this->_url->getUrl('checkout/cart') . '?e-ref='. md5($token);
+                //phpcs:ignore
+                $url = $this->_url->getUrl('checkout/cart') . '?e-ref=' . md5($token);
 
                 $currentStore = $this->storeManager->getStore();
                 $targetStore = $quote->getStore();
