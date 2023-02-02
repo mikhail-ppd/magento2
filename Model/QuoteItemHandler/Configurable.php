@@ -15,17 +15,24 @@ class Configurable implements QuoteItemHandlerInterface
 {
     /** @var DataObjectFactory */
     protected $dataObjectFactory;
+    /** @var InventoryManagement */
+    protected $inventoryManagement;
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
     /**
      * @param ProductRepositoryInterface $productRepository
      * @param DataObjectFactory $dataObjectFactory
+     * @param InventoryManagement $inventoryManagement
      */
-    public function __construct(ProductRepositoryInterface $productRepository, DataObjectFactory $dataObjectFactory)
-    {
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        DataObjectFactory $dataObjectFactory,
+        InventoryManagement $inventoryManagement
+    ) {
         $this->dataObjectFactory = $dataObjectFactory;
         $this->productRepository = $productRepository;
+        $this->inventoryManagement = $inventoryManagement;
     }
 
     /**
@@ -33,6 +40,15 @@ class Configurable implements QuoteItemHandlerInterface
      */
     public function getBuyRequest(ProductInterface $product, DataObject $requestProduct): DataObject
     {
+        if (!$this->inventoryManagement->isSalable($product)) {
+            return $this->dataObjectFactory->create([
+                'data' => [
+                    'product' => (int)$product->getId(),
+                    'qty' => 0
+                ]
+            ]);
+        }
+
         $childSku = $requestProduct->getData('child_sku') ?? null;
 
         if (!$childSku) {
@@ -44,6 +60,16 @@ class Configurable implements QuoteItemHandlerInterface
         }
 
         $childProduct = $this->productRepository->get($childSku, false, $product->getStoreId(), true);
+
+        if (!$this->inventoryManagement->isSalable($childProduct)) {
+            return $this->dataObjectFactory->create([
+                'data' => [
+                    'product' => (int)$product->getId(),
+                    'child_product_name' => $childProduct->getName(),
+                    'qty' => 0
+                ]
+            ]);
+        }
 
         /** @var ConfigurableType $productTypeInstance */
         $productTypeInstance = $product->getTypeInstance();
@@ -57,10 +83,21 @@ class Configurable implements QuoteItemHandlerInterface
             $superAttributeList[$attribute->getAttributeId()] = (int)$childProduct->getData($attributeCode);
         }
 
+        $qtyToAdd = $requestProduct->getData('qty') ?? 1;
+        $maxSaleQty = $this->inventoryManagement->getMaxSaleQty($childProduct);
+
+        if (!$this->inventoryManagement->isBackordersAllowed($childProduct)) {
+            $qtyToAdd = min($maxSaleQty, $qtyToAdd);
+        }
+
+        $minSaleQty = $this->inventoryManagement->getMinSaleQty($childProduct);
+        $qtyToAdd = $maxSaleQty < $minSaleQty ? 0 : max($minSaleQty, $qtyToAdd);
+
         return $this->dataObjectFactory->create([
             'data' => [
                 'product' => (int)$product->getId(),
-                'qty' => $requestProduct->getData('qty') ?? 1,
+                'child_product_name' => $childProduct->getName(),
+                'qty' => $qtyToAdd,
                 'super_attribute' => $superAttributeList
             ]
         ]);
