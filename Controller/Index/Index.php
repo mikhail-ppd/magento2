@@ -70,7 +70,11 @@ class Index extends Action implements HttpGetActionInterface
                 $items = $quote->getAllVisibleItems();
                 /** @var Item $item */
                 $item = end($items);
-                $this->checkoutSession->setLastAddedProductId($item->getProductId());
+
+                if ($item) {
+                    $this->checkoutSession->setLastAddedProductId($item->getProductId());
+                }
+
                 //phpcs:ignore
                 $url = $this->_url->getUrl('checkout/cart') . '?e-ref=' . md5($token);
 
