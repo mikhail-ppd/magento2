@@ -19,7 +19,7 @@
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
                             <resource id="Elisa_ProductApi::settings" title="ELISA Settings" sortOrder="10000">
-                                <resource id="Elisa_ProductApi::onsite_settings" title="On-Site Settings"
+                                <resource id="Elisa_ProductApi::onsite_settings" title="Onsite Settings"
                                           sortOrder="100"/>
                             </resource>
                         </resource>

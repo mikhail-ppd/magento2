@@ -91,16 +91,21 @@ class Event extends Template implements BlockInterface, IdentityInterface
         $key = parent::getCacheKeyInfo();
 
         $key['active'] = $this->config->isOnSiteEventsActive();
+        $key['date_format'] = (int)($this->getData('date_format') ?? \IntlDateFormatter::MEDIUM);
+        $key['image_fill_color'] = $this->getImageFillColor();
+        $key['image_height'] = $this->getImageHeight();
+        $key['image_ratio_uniform'] = (int)$this->isImageRatioUniform();
+        $key['limit'] = (int)$this->getData('limit');
+        $key['play_button_label'] = $this->getPlayButtonLabel() ?? '';
+        $key['play_button_scale'] = $this->getPlayButtonScale();
+        $key['show_description'] = $this->isDescriptionShown();
+        $key['show_play_button'] = (int)$this->getData('show_play_button');
         $key['sort_order'] = (string)$this->getData('sort_order');
         $key['status'] = (string)$this->getData('status');
         $key['tags'] = (string)$this->getData('tags');
-        $key['limit'] = (int)$this->getData('limit');
-        $key['date_format'] = (int)($this->getData('date_format') ?? \IntlDateFormatter::MEDIUM);
         $key['time_format'] = (int)($this->getData('time_format') ?? \IntlDateFormatter::SHORT);
-        $key['use_default_styles'] = $this->getDefaultStylingMode();
-        $key['show_description'] = $this->isDescriptionShown();
-        $key['play_button_label'] = $this->getPlayButtonLabel() ?? '';
         $key['title'] = $this->getTitle() ?? '';
+        $key['use_default_styles'] = $this->getDefaultStylingMode();
 
         return $key;
     }
@@ -211,6 +216,45 @@ class Event extends Template implements BlockInterface, IdentityInterface
     }
 
     /**
+     * Additional inline styles for handing images of varying ratio
+     *
+     * @return string
+     */
+    public function getImageInlineStyles(): string
+    {
+        $mode = $this->getDefaultStylingMode();
+
+        if ($mode === 0 || $this->isImageRatioUniform()) {
+            return '';
+        }
+
+        $override = $mode === 2 ? ' !important' : '';
+        $imageHeight = $this->getImageHeight();
+        $imageFillColor = $this->getImageFillColor() ?? 'rgba(240,240,240,0.5)';
+
+        return "height: {$imageHeight}px$override; background: $imageFillColor$override;";
+    }
+
+    /**
+     * Additional inline styles for "button" scaling
+     *
+     * @return string
+     */
+    public function getPlayButtonInlineStyles(): string
+    {
+        $mode = $this->getDefaultStylingMode();
+
+        if ($mode === 0) {
+            return '';
+        }
+
+        $override = $mode === 2 ? ' !important' : '';
+        $playButtonScale = $this->getPlayButtonScale();
+
+        return "transform: scale($playButtonScale)${override};";
+    }
+
+    /**
      * Get play button label
      *
      * @return string|null
@@ -218,6 +262,19 @@ class Event extends Template implements BlockInterface, IdentityInterface
     public function getPlayButtonLabel(): ?string
     {
         return $this->getData('play_button_label') ?: null;
+    }
+
+    /**
+     * Is play button showed
+     *
+     * @param EventInterface $event
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     */
+    public function getShowPlayButton(EventInterface $event): bool
+    {
+        return $this->isPlayable($event) && ($this->getData('show_play_button') ?? true);
     }
 
     /**
@@ -283,6 +340,46 @@ class Event extends Template implements BlockInterface, IdentityInterface
     private function getDefaultStylingMode(): int
     {
         return (int)($this->getData('use_default_styles') ?? 0);
+    }
+
+    /**
+     * Get image container fill color
+     *
+     * @return string
+     */
+    private function getImageFillColor(): string
+    {
+        return $this->getData('image_fill_color') ?? 'rgba(240,240,240,0.5)';
+    }
+
+    /**
+     * Get image container height
+     *
+     * @return int
+     */
+    private function getImageHeight(): int
+    {
+        return (int)($this->getData('image_height') ?? 250);
+    }
+
+    /**
+     * Scaling for play button
+     *
+     * @return float
+     */
+    private function getPlayButtonScale(): float
+    {
+        return (float)($this->getData('play_button_scale') ?? 1);
+    }
+
+    /**
+     * Whether all images are in the same ratio
+     *
+     * @return bool
+     */
+    private function isImageRatioUniform(): bool
+    {
+        return filter_var($this->getData('image_ratio_uniform') ?? true, FILTER_VALIDATE_BOOLEAN);
     }
 
     /**

@@ -1,7 +1,7 @@
 body div.with-strict-default-styles,
-body div.with-strict-default-styles *,
-body div.with-strict-default-styles *:after,
-body div.with-strict-default-styles *:before {
+body div.with-strict-default-styles *:not(svg,path),
+body div.with-strict-default-styles :after,
+body div.with-strict-default-styles :before {
     all: revert !important;
 }
 
@@ -40,7 +40,6 @@ body div.with-default-styles h2 {
     margin: 0 0 10px;
 }
 
-
 body div.with-strict-default-styles h2 {
     font-weight: 600 !important;
     margin: 0 0 10px !important;
@@ -61,93 +60,127 @@ body div.with-strict-default-styles > .elisa-events-container {
 }
 
 body div.with-default-styles .elisa-image {
+    align-items: center;
+    display: flex;
+    justify-content: center;
     line-height: 0;
     position: relative;
 }
 
 body div.with-strict-default-styles .elisa-image {
+    align-items: center !important;
+    display: flex !important;
+    justify-content: center !important;
     line-height: 0 !important;
     position: relative !important;
 }
 
 body div.with-default-styles .elisa-image img {
     width: 100%;
+    object-fit: contain;
 }
 
 body div.with-strict-default-styles .elisa-image img {
     width: 100% !important;
+    object-fit: contain !important;
 }
 
-body div.with-default-styles button.elisa-play-button.play.button {
-    background-color: #fff;
-    border-radius: 20px;
-    border: solid 2px transparent;
-    color: #000000;
-    padding: 7px 20px;
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-}
-
-body div.with-strict-default-styles button.elisa-play-button.play.button {
-    background-color: #fff !important;
-    border-radius: 20px !important;
-    border: solid 2px transparent !important;
-    color: #000000 !important;
-    padding: 7px 20px !important;
-    position: absolute !important;
-    bottom: 5px !important;
-    left: 5px !important;
-}
-
-body div.with-default-styles button.elisa-play-button.play.button:hover {
+body div.with-default-styles .elisa-play-button-group {
     cursor: pointer;
-    border: solid 2px #000000;
 }
 
-body div.with-strict-default-styles button.elisa-play-button.play.button:hover {
+body div.with-strict-default-styles .elisa-play-button-group {
     cursor: pointer !important;
-    border: solid 2px #000000 !important;
 }
 
-body div.with-default-styles .gg-play-button::before {
-    border-bottom: 6px solid transparent;
-    border-left: 9px solid;
-    border-top: 6px solid transparent;
-    box-sizing: border-box;
-    content: "";
-    display: block;
-    margin-right: 5px;
+body div.with-default-styles .elisa-play-button-wrapper {
+    align-items: center;
+    aspect-ratio: 1/1;
+    background-color: #00000080;
+    border-radius: 100%;
+    cursor: pointer;
+    display: flex;
+    height: 60%;
+    justify-content: center;
+    opacity: 0.8;
+    position: absolute;
 }
 
-body div.with-strict-default-styles .gg-play-button::before {
-    border-bottom: 6px solid transparent !important;
-    border-left: 9px solid !important;
-    border-top: 6px solid transparent !important;
-    box-sizing: border-box !important;
-    content: "" !important;
-    display: block !important;
-    margin-right: 5px !important;
+body div.with-default-styles .elisa-play-button-group:hover .elisa-play-button-wrapper,
+body div.with-default-styles .elisa-play-button-wrapper:hover {
+    opacity: 1;
 }
 
-body div.with-default-styles.no-button-label .gg-play-button::before {
-    border-bottom: 6px solid transparent;
-    border-left: 9px solid;
-    border-top: 6px solid transparent;
-    box-sizing: border-box;
-    content: "";
-    display: block;
-    margin-right: 0;
+body div.with-default-styles .elisa-play-button-wrapper .play-button {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 107%;
 }
 
-body div.with-strict-default-styles.no-button-label .gg-play-button::before {
-    border-bottom: 6px solid transparent !important;
-    border-left: 9px solid !important;
-    border-top: 6px solid transparent !important;
-    box-sizing: border-box !important;
-    content: "" !important;
-    display: block !important;
-    margin-right: 0 !important;
+body div.with-default-styles .elisa-play-button-wrapper .play-button-indicator-background {
+    align-items: center;
+    aspect-ratio: 1/1;
+    background-color: #000c;
+    border: 6px solid #1d222b;
+    border-radius: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 160%;
+}
+
+body div.with-default-styles .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+    bottom: 10%;
+    color: white;
+    position: absolute;
+}
+
+body div.with-strict-default-styles .elisa-play-button-wrapper {
+    align-items: center !important;
+    aspect-ratio: 1/1 !important;
+    background-color: #00000080 !important;
+    border-radius: 100% !important;
+    cursor: pointer !important;
+    display: flex !important;
+    height: 60% !important;
+    justify-content: center !important;
+    opacity: 0.8 !important;
+    position: absolute !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-group:hover .elisa-play-button-wrapper,
+body div.with-strict-default-styles .elisa-play-button-wrapper:hover {
+    opacity: 1 !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-wrapper .play-button {
+    align-items: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    position: absolute !important;
+    width: 107% !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-wrapper .play-button-indicator-background {
+    align-items: center !important;
+    aspect-ratio: 1/1 !important;
+    background-color: #000c !important;
+    border: 6px solid #1d222b !important;
+    border-radius: 100% !important;
+    cursor: pointer !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    width: 160% !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+    bottom: 10% !important;
+    color: white !important;
+    position: absolute !important;
 }
 
 body div.with-default-styles p.date {
@@ -169,30 +202,7 @@ body div.with-strict-default-styles h4 {
     font-weight: 700 !important;
 }
 
-body div.with-default-styles .gg-play-button {
-    align-items: center;
-    box-sizing: border-box;
-    display: flex;
-    font-style: normal;
-    height: 22px;
-    justify-content: center;
-    position: relative;
-}
-
-body div.with-strict-default-styles .gg-play-button {
-    align-items: center !important;
-    box-sizing: border-box !important;
-    display: flex !important;
-    font-style: normal !important;
-    height: 22px !important;
-    justify-content: center !important;
-    position: relative !important;
-}
-
-@media only screen
-and (min-device-width: 320px)
-and (max-device-width: 480px)
-and (-webkit-min-device-pixel-ratio: 2) {
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
     body div.with-default-styles > .elisa-events-container {
         display: grid;
         gap: 25px;
@@ -209,6 +219,14 @@ and (-webkit-min-device-pixel-ratio: 2) {
 }
 
 @media only screen and (max-width: 768px) {
+    body div.with-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+        font-size: max(3vw, 18px);
+    }
+
+    body div.with-strict-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+        font-size: max(3vw, 18px) !important;
+    }
+
     body div.with-default-styles > .elisa-events-container,
     body div.with-strict-default-styles > .elisa-events-container {
         grid-template-columns: repeat(1, 1fr) !important;
@@ -216,6 +234,14 @@ and (-webkit-min-device-pixel-ratio: 2) {
 }
 
 @media only screen and (min-width: 768px) {
+    body div.with-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+        font-size: 2vw;
+    }
+
+    body div.with-strict-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+        font-size: 2vw !important;
+    }
+
     body div.with-default-styles > .elisa-events-container,
     body div.with-strict-default-styles > .elisa-events-container {
         grid-template-columns: repeat(2, 1fr) !important;
@@ -223,6 +249,14 @@ and (-webkit-min-device-pixel-ratio: 2) {
 }
 
 @media only screen and (min-width: 992px) {
+    body div.with-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+        font-size: 14px;
+    }
+
+    body div.with-strict-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+        font-size: 14px !important;
+    }
+
     body div.with-default-styles > .elisa-events-container,
     body div.with-strict-default-styles > .elisa-events-container {
         grid-template-columns: repeat(3, 1fr) !important;

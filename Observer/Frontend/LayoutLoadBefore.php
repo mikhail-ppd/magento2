@@ -66,7 +66,7 @@ class LayoutLoadBefore implements ObserverInterface
     }
 
     /**
-     * Checks whether on-site is allowed in the current layout
+     * Checks whether onsite is allowed in the current layout
      *
      * @param string[] $handles
      * @return bool
