@@ -46,11 +46,6 @@
                     </option>
                 </options>
             </parameter>
-            <parameter name="play_button_label" sort_order="45" required="false" xsi:type="text" visible="true">
-                <label>Play button label</label>
-                <description>Leave empty to show only icon.</description>
-                <value>Play</value>
-            </parameter>
             <parameter name="date_format" sort_order="50" required="false" xsi:type="select" visible="true">
                 <label>Localized Date Format</label>
                 <options>
@@ -96,7 +91,26 @@
                     </option>
                 </options>
             </parameter>
-            <parameter name="use_default_styles" sort_order="70" required="false" xsi:type="select" visible="true">
+            <parameter name="show_play_button" sort_order="70" required="false" xsi:type="select" visible="true">
+                <label>Show Play Button</label>
+                <options>
+                    <option name="0" value="0">
+                        <label>No</label>
+                    </option>
+                    <option name="1" value="1" selected="true">
+                        <label>Yes</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="play_button_label" sort_order="75" required="false" xsi:type="text" visible="true">
+                <label>Play button label</label>
+                <description>Leave empty to show only icon.</description>
+                <depends>
+                    <parameter name="show_play_button" value="1" />
+                </depends>
+                <value>Play</value>
+            </parameter>
+            <parameter name="use_default_styles" sort_order="80" required="false" xsi:type="select" visible="true">
                 <label>Use Default Styles</label>
                 <description>
                     <![CDATA[
@@ -119,6 +133,70 @@
                         <label>Yes, Strict Overrides</label>
                     </option>
                 </options>
+            </parameter>
+            <parameter name="image_ratio_uniform" sort_order="90" required="false" xsi:type="select" visible="true">
+                <label>Same-Ratio Images</label>
+                <description>
+                    <![CDATA[
+                        Choose Yes if all your cover images are in the same aspect ratio.
+                        <br/>Otherwise, choose No.
+                        <br/>
+                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.
+                    ]]>
+                </description>
+                <options>
+                    <option name="0" value="0">
+                        <label>No</label>
+                    </option>
+                    <option name="1" value="1" selected="true">
+                        <label>Yes</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="image_height" sort_order="95" required="false" xsi:type="text" visible="true">
+                <label>Image Container Height</label>
+                <description>
+                    <![CDATA[
+                        Use positive decimal value in pixels to make unequal aspect-ratio appear with same height on frontend.
+                        <br/>
+                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.
+                    ]]>
+                </description>
+                <depends>
+                    <parameter name="image_ratio_uniform" value="0" />
+                </depends>
+                <value>250</value>
+            </parameter>
+            <parameter name="image_fill_color" sort_order="100" required="false" xsi:type="text" visible="true">
+                <label>Image Fill Color</label>
+                <description>
+                    <![CDATA[
+                        Color used to fill empty spaces in the image container to maintain aspect-ratio w.r.t. defined height.
+                        <br/>Use RGBA color format.
+                        <br/>See picker <a href="https://rgbacolorpicker.com/" _target="blank">here</a>.
+                        <br/>
+                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.
+                    ]]>
+                </description>
+                <depends>
+                    <parameter name="image_ratio_uniform" value="0" />
+                </depends>
+                <value>rgba(240,240,240,0.5)</value>
+            </parameter>
+            <parameter name="play_button_scale" sort_order="110" required="false" xsi:type="text" visible="true">
+                <label>Play Button Scale</label>
+                <description>
+                    <![CDATA[
+                        Use a positive decimal value to adjust the scale of the play button.
+                        <br/>Default is 1.
+                        <br/>
+                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.
+                    ]]>
+                </description>
+                <depends>
+                    <parameter name="show_play_button" value="1" />
+                </depends>
+                <value>1</value>
             </parameter>
             <parameter name="template" sort_order="1000" xsi:type="select" required="true" visible="true">
                 <label>Template</label>

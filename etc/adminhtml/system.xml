@@ -20,14 +20,14 @@
             </group>
         </section>
         <section id="elisa_on_site" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>ELISA On-Site</label>
+            <label>ELISA Onsite</label>
             <tab>elisa</tab>
             <resource>Elisa_ProductApi::onsite_settings</resource>
             <group id="general" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
                 <attribute type="expanded">1</attribute>
                 <label>General</label>
                 <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Enable On-Site Live Widgets</label>
+                    <label>Enable Onsite Live Widgets</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="page_uid" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">

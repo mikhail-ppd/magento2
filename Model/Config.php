@@ -51,7 +51,7 @@ class Config
     }
 
     /**
-     * Gets layout handle masks for not including the Elisa on-site JS
+     * Gets layout handle masks for not including the Elisa onsite JS
      * For example, you might certainly not want to have this included on the checkout flow and
      * divert the attention of potential conversions.
      *
