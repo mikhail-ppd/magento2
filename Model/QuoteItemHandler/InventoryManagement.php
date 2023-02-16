@@ -170,7 +170,8 @@ class InventoryManagement
         if ($this->isMsiAvailable()) {
             $stockId = $this->getStockIdForCurrentWebsite->execute();
             $stockItemData = $this->getStockItemData->execute($product->getSku(), $stockId);
-            return filter_var($stockItemData[GetStockItemDataInterface::IS_SALABLE], FILTER_VALIDATE_BOOLEAN);
+            return $stockItemData
+                && filter_var($stockItemData[GetStockItemDataInterface::IS_SALABLE], FILTER_VALIDATE_BOOLEAN);
         }
 
         $websiteId = $this->storeManager->getWebsite()->getId();
