@@ -20,39 +20,53 @@ class MultiSourceInventory implements StockDataBuilderInterface
 {
     /** @var Context */
     protected $context;
-    /** @var GetProductSalableQtyInterface */
+    /** @var GetProductSalableQtyInterface|null */
     protected $getProductSalableQty;
-    /** @var GetStockIdForCurrentWebsite */
+    /** @var GetStockIdForCurrentWebsite|null */
     protected $getStockIdForCurrentWebsite;
-    /** @var GetStockItemConfigurationInterface */
+    /** @var GetStockItemConfigurationInterface|null */
     protected $getStockItemConfiguration;
-    /** @var GetStockItemDataInterface */
+    /** @var GetStockItemDataInterface|null */
     protected $getStockItemData;
-    /** @var IsSourceItemManagementAllowedForProductTypeInterface */
+    /** @var IsSourceItemManagementAllowedForProductTypeInterface|null */
     protected $isSourceItemManagementAllowedForProductType;
 
     /**
-     * @param GetStockIdForCurrentWebsite $getStockIdForCurrentWebsite
-     * @param GetStockItemConfigurationInterface $getStockItemConfiguration
-     * @param GetProductSalableQtyInterface $getProductSalableQty
-     * @param GetStockItemDataInterface $getStockItemData
-     * @param IsSourceItemManagementAllowedForProductTypeInterface $isSourceItemManagementAllowedForProductType
      * @param Context $context
+     * @param GetStockIdForCurrentWebsite|null $getStockIdForCurrentWebsite
+     * @param GetStockItemConfigurationInterface|null $getStockItemConfiguration
+     * @param GetProductSalableQtyInterface|null $getProductSalableQty
+     * @param GetStockItemDataInterface|null $getStockItemData
+     * @param IsSourceItemManagementAllowedForProductTypeInterface|null $isSourceItemManagementAllowedForProductType
      */
     public function __construct(
-        GetStockIdForCurrentWebsite $getStockIdForCurrentWebsite,
-        GetStockItemConfigurationInterface $getStockItemConfiguration,
-        GetProductSalableQtyInterface $getProductSalableQty,
-        GetStockItemDataInterface $getStockItemData,
-        IsSourceItemManagementAllowedForProductTypeInterface $isSourceItemManagementAllowedForProductType,
-        Context $context
+        Context $context,
+        ?GetStockIdForCurrentWebsite $getStockIdForCurrentWebsite = null,
+        ?GetStockItemConfigurationInterface $getStockItemConfiguration = null,
+        ?GetProductSalableQtyInterface $getProductSalableQty = null,
+        ?GetStockItemDataInterface $getStockItemData = null,
+        ?IsSourceItemManagementAllowedForProductTypeInterface $isSourceItemManagementAllowedForProductType = null
     ) {
         $this->context = $context;
-        $this->getProductSalableQty = $getProductSalableQty;
-        $this->getStockIdForCurrentWebsite = $getStockIdForCurrentWebsite;
-        $this->getStockItemConfiguration = $getStockItemConfiguration;
-        $this->getStockItemData = $getStockItemData;
-        $this->isSourceItemManagementAllowedForProductType = $isSourceItemManagementAllowedForProductType;
+
+        if ($this->isMsiAvailable()) {
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+            $this->getProductSalableQty =
+                $getProductSalableQty ?? $objectManager->get(GetProductSalableQtyInterface::class);
+
+            $this->getStockIdForCurrentWebsite =
+                $getStockIdForCurrentWebsite ?? $objectManager->get(GetStockIdForCurrentWebsite::class);
+
+            $this->getStockItemConfiguration =
+                $getStockItemConfiguration ?? $objectManager->get(GetStockItemConfigurationInterface::class);
+
+            $this->getStockItemData = $getStockItemData ?? $objectManager->get(GetStockItemDataInterface::class);
+
+            $this->isSourceItemManagementAllowedForProductType =
+                $isSourceItemManagementAllowedForProductType
+                ?? $objectManager->get(IsSourceItemManagementAllowedForProductTypeInterface::class);
+        }
     }
 
     /**
@@ -60,7 +74,7 @@ class MultiSourceInventory implements StockDataBuilderInterface
      */
     public function execute(ElisaProductInterface $elisaProduct, ProductInterface $product)
     {
-        if (!$this->context->getModuleManager()->isEnabled('Magento_InventoryApi')) {
+        if (!$this->isMsiAvailable()) {
             return;
         }
 
@@ -96,4 +110,13 @@ class MultiSourceInventory implements StockDataBuilderInterface
         }
     }
 
+    /**
+     * Check whether MSI is available
+     *
+     * @return bool
+     */
+    private function isMsiAvailable(): bool
+    {
+        return $this->context->getModuleManager()->isEnabled('Magento_InventoryApi');
+    }
 }
