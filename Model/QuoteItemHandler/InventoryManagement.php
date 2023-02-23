@@ -60,7 +60,7 @@ class InventoryManagement
         ?GetStockItemConfigurationInterface $getStockItemConfiguration = null,
         ?GetProductSalableQtyInterface $getProductSalableQty = null,
         ?GetStockItemDataInterface $getStockItemData = null,
-        ?IsSourceItemManagementAllowedForProductTypeInterface $isSourceItemManagementAllowedForProductType = null,
+        ?IsSourceItemManagementAllowedForProductTypeInterface $isSourceItemManagementAllowedForProductType = null
     ) {
         $this->moduleManager = $moduleManager;
         $this->stockConfiguration = $stockConfiguration;
