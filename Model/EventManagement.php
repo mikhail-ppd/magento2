@@ -70,6 +70,8 @@ class EventManagement implements EventManagementInterface
 
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function refreshEvents(?int $storeId = null)
     {
@@ -92,6 +94,24 @@ class EventManagement implements EventManagementInterface
                 $event->setCoverPhotoPath($path);
             } catch (ElisaException|FileSystemException $e) {
                 $this->logger->error($e);
+            }
+
+            if ($animationUrl = $event->getAnimationRemoteUrl()) {
+                try {
+                    $path = $this->imageImporter->importImage($animationUrl, $event->getEventId());
+                    $event->setAnimationPath($path);
+                } catch (ElisaException|FileSystemException $e) {
+                    $this->logger->error($e);
+                }
+            }
+
+            if ($liveCoverPhotoUrl = $event->getLiveCoverPhotoRemoteUrl()) {
+                try {
+                    $path = $this->imageImporter->importImage($liveCoverPhotoUrl, $event->getEventId());
+                    $event->setLiveCoverPhotoPath($path);
+                } catch (ElisaException|FileSystemException $e) {
+                    $this->logger->error($e);
+                }
             }
 
             $existingEvent = $this->eventFactory->create();

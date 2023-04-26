@@ -9,6 +9,7 @@ use Elisa\ProductApi\Model\Event as Model;
 use Elisa\ProductApi\Model\ResourceModel\Event\Collection;
 use Elisa\ProductApi\Model\ResourceModel\Event\CollectionFactory;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Math\Random;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
 use Magento\Framework\UrlInterface;
@@ -16,6 +17,9 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Widget\Block\BlockInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class Event extends Template implements BlockInterface, IdentityInterface
 {
     /** @var Config */
@@ -26,6 +30,10 @@ class Event extends Template implements BlockInterface, IdentityInterface
     protected $dateTimeFactory;
     /** @var Model[] */
     protected $events = null;
+    /** @var Random */
+    protected $random;
+    /** @var string|null */
+    protected $uniqueId = null;
 
     /**
      * @param Config $config
@@ -36,6 +44,7 @@ class Event extends Template implements BlockInterface, IdentityInterface
      */
     public function __construct(
         Config $config,
+        Random $random,
         CollectionFactory $collectionFactory,
         DateTimeFactory $dateTimeFactory,
         Template\Context $context,
@@ -45,6 +54,7 @@ class Event extends Template implements BlockInterface, IdentityInterface
         $this->collectionFactory = $collectionFactory;
         $this->config = $config;
         $this->dateTimeFactory = $dateTimeFactory;
+        $this->random = $random;
 
         $this->addData([
             'cache_lifetime' => 86400
@@ -84,6 +94,38 @@ class Event extends Template implements BlockInterface, IdentityInterface
     }
 
     /**
+     * Get additional css classes
+     *
+     * @return string
+     */
+    public function getAdditionalContainerClasses(): string
+    {
+        $classes = [];
+
+        $classes[] = "md-{$this->getRowItemsMd()}";
+        $classes[] = "lg-{$this->getRowItemsLg()}";
+
+        return $classes ? ' ' . implode(' ', $classes) : '';
+    }
+
+    /**
+     * Get Animation URL
+     *
+     * @param EventInterface $event
+     * @return string|null
+     */
+    public function getAnimationUrl(EventInterface $event): ?string
+    {
+        $path = $event->getAnimationPath();
+
+        if (!$path) {
+            return null;
+        }
+
+        return $this->_urlBuilder->getBaseUrl(['_type' => UrlInterface::URL_TYPE_MEDIA]) . '/' . $path;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getCacheKeyInfo()
@@ -106,6 +148,9 @@ class Event extends Template implements BlockInterface, IdentityInterface
         $key['time_format'] = (int)($this->getData('time_format') ?? \IntlDateFormatter::SHORT);
         $key['title'] = $this->getTitle() ?? '';
         $key['use_default_styles'] = $this->getDefaultStylingMode();
+        $key['row_items_md'] = $this->getRowItemsMd();
+        $key['row_items_lg'] = $this->getRowItemsLg();
+        $key['show_video_thumbnail'] = $this->isVideoThumbnailShown();
 
         return $key;
     }
@@ -218,9 +263,10 @@ class Event extends Template implements BlockInterface, IdentityInterface
     /**
      * Additional inline styles for handing images of varying ratio
      *
+     * @param bool $onlyHeight
      * @return string
      */
-    public function getImageInlineStyles(): string
+    public function getImageInlineStyles(bool $onlyHeight = false): string
     {
         $mode = $this->getDefaultStylingMode();
 
@@ -230,9 +276,50 @@ class Event extends Template implements BlockInterface, IdentityInterface
 
         $override = $mode === 2 ? ' !important' : '';
         $imageHeight = $this->getImageHeight();
+
+        if ($onlyHeight) {
+            return "height: {$imageHeight}px$override;";
+        }
+
         $imageFillColor = $this->getImageFillColor() ?? 'rgba(240,240,240,0.5)';
 
         return "height: {$imageHeight}px$override; background: $imageFillColor$override;";
+    }
+
+    /**
+     * Get Live Cover Photo URL
+     *
+     * @param EventInterface $event
+     * @return string|null
+     */
+    public function getLiveCoverPhotoUrl(EventInterface $event): ?string
+    {
+        $path = $event->getLiveCoverPhotoPath();
+
+        if (!$path) {
+            return null;
+        }
+
+        return $this->_urlBuilder->getBaseUrl(['_type' => UrlInterface::URL_TYPE_MEDIA]) . '/' . $path;
+    }
+
+    /**
+     * Additional inline styles for "button" scaling
+     *
+     * @return string
+     */
+    public function getLoaderContainerInlineStyles(): string
+    {
+        $mode = $this->getDefaultStylingMode();
+
+        if ($mode === 0 || $this->isImageRatioUniform()) {
+            return '';
+        }
+
+        $override = $mode === 2 ? ' !important' : '';
+        $imageFillColor = $this->getImageFillColor() ?? 'rgba(240,240,240,0.5)';
+
+        return "background: $imageFillColor$override;";
     }
 
     /**
@@ -305,6 +392,20 @@ class Event extends Template implements BlockInterface, IdentityInterface
         return $this->getData('title') ?: null;
     }
 
+    public function getUniqueId(): string
+    {
+        if ($this->uniqueId === null) {
+            $dataArray = $this->getCacheKeyInfo();
+            $dataArray['random'] = $this->random->getUniqueHash();
+
+            $data = $this->serialize($dataArray);
+
+            $this->uniqueId = md5($data);  //phpcs:ignore
+        }
+
+        return $this->uniqueId;
+    }
+
     /**
      * Is event playable
      *
@@ -317,6 +418,16 @@ class Event extends Template implements BlockInterface, IdentityInterface
             $event->getStatus(),
             [EventStatuses::STATUS_VOD, EventStatuses::STATUS_LIVE]
         );
+    }
+
+    /**
+     * Whether thumbnail is displayed on video cover
+     *
+     * @return bool
+     */
+    public function isVideoThumbnailShown(): bool
+    {
+        return (bool)($this->getData('show_video_thumbnail') ?? false);
     }
 
     /**
@@ -340,6 +451,26 @@ class Event extends Template implements BlockInterface, IdentityInterface
     private function getDefaultStylingMode(): int
     {
         return (int)($this->getData('use_default_styles') ?? 0);
+    }
+
+    /**
+     * Get items per row for medium screens
+     *
+     * @return int
+     */
+    private function getRowItemsMd(): int
+    {
+        return (int)($this->getData('row_items_md') ?? 2);
+    }
+
+    /**
+     * Get items per row for large screens
+     *
+     * @return int
+     */
+    private function getRowItemsLg(): int
+    {
+        return (int)($this->getData('row_items_lg') ?? 3);
     }
 
     /**

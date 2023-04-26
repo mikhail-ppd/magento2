@@ -55,7 +55,11 @@
             "status": true,
             "tags": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "live_cover_photo_path": true,
+            "live_cover_photo_remote_url": true,
+            "animation_path": true,
+            "animation_remote_url": true
         },
         "index": {
             "ELISA_PRODUCTSAPI_EVENT_PAGE_UID_STATUS_TAGS_START_TIMESTAMP": true,

@@ -90,7 +90,7 @@ class ImageImporter
 
         try {
             $uri = \Laminas\Uri\UriFactory::factory($imageUrl);
-        }catch (\Throwable $e) {
+        } catch (\Throwable $e) {
             $uri = \Zend\Uri\UriFactory::factory($imageUrl);
         }
 
@@ -146,6 +146,12 @@ class ImageImporter
     {
         $client = $this->getHttpClient();
         $client->get($url);
+        $status = $client->getStatus();
+
+        if ($status >= 300) {
+            return ['', ''];
+        }
+
         $headers = $client->getHeaders();
         $contentType = $headers['content-type'] ?? '';
         return [$client->getBody(), $contentType];

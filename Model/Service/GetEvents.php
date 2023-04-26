@@ -88,7 +88,9 @@ class GetEvents implements GetEventsInterface, StoreLevelServiceInterface
                 ->setLiveStartTimestamp((int)(((int)$apiEvent['liveStartTime']) / 1000))
                 ->setStatus((string)$apiEvent['currentStatus'])
                 ->setCoverPhotoRemoteUrl((string)$apiEvent['coverPhoto'])
-                ->setTags($apiEvent['tags'] ?? []);
+                ->setTags($apiEvent['tags'] ?? [])
+                ->setAnimationRemoteUrl($apiEvent['animation'] ?? '')
+                ->setLiveCoverPhotoRemoteUrl($apiEvent['liveVideoCover'] ?? '');
 
             $events[] = $event;
         }

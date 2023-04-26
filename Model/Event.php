@@ -12,12 +12,16 @@ use Magento\Framework\Model\AbstractModel;
 class Event extends AbstractModel implements EventInterface, IdentityInterface
 {
     public const CACHE_TAG = 'els_ei';
+    public const KEY_ANIMATION_PATH = 'animation_path';
+    public const KEY_ANIMATION_REMOTE_URL = 'animation_remote_url';
     public const KEY_CAMPAIGN_ID = 'campaign_id';
     public const KEY_COVER_PHOTO_PATH = 'cover_photo_path';
     public const KEY_COVER_PHOTO_REMOTE_URL = 'cover_photo_remote_url';
     public const KEY_DEADLINE_TIMESTAMP = 'deadline_timestamp';
     public const KEY_DESCRIPTION = 'description';
     public const KEY_EVENT_ID = 'event_id';
+    public const KEY_LIVE_COVER_PHOTO_PATH = 'live_cover_photo_path';
+    public const KEY_LIVE_COVER_PHOTO_REMOTE_URL = 'live_cover_photo_remote_url';
     public const KEY_LIVE_START_TIMESTAMP = 'live_start_timestamp';
     public const KEY_NAME = 'name';
     public const KEY_NAME_SHORT = 'name_short';
@@ -62,6 +66,22 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
     /**
      * @inheritDoc
      */
+    public function getAnimationPath(): string
+    {
+        return (string)$this->getData(self::KEY_ANIMATION_PATH);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAnimationRemoteUrl(): string
+    {
+        return (string)$this->getData(self::KEY_ANIMATION_REMOTE_URL);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getCampaignId(): string
     {
         return (string)$this->getData(self::KEY_CAMPAIGN_ID);
@@ -81,6 +101,22 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
     public function getCoverPhotoRemoteUrl(): string
     {
         return (string)$this->getData(self::KEY_COVER_PHOTO_REMOTE_URL);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiveCoverPhotoPath(): ?string
+    {
+        return (string)$this->getData(self::KEY_LIVE_COVER_PHOTO_PATH);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiveCoverPhotoRemoteUrl(): string
+    {
+        return (string)$this->getData(self::KEY_LIVE_COVER_PHOTO_REMOTE_URL);
     }
 
     /**
@@ -174,6 +210,22 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
     /**
      * @inheritDoc
      */
+    public function setAnimationPath(string $value): EventInterface
+    {
+        return $this->setData(self::KEY_ANIMATION_PATH, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setAnimationRemoteUrl(string $value): EventInterface
+    {
+        return $this->setData(self::KEY_ANIMATION_REMOTE_URL, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function setCampaignId(string $value): EventInterface
     {
         return $this->setData(self::KEY_CAMPAIGN_ID, $value);
@@ -217,6 +269,22 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
     public function setEventId(string $value): EventInterface
     {
         return $this->setData(self::KEY_EVENT_ID, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLiveCoverPhotoPath(string $value): EventInterface
+    {
+        return $this->setData(self::KEY_LIVE_COVER_PHOTO_PATH, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLiveCoverPhotoRemoteUrl(string $value): EventInterface
+    {
+        return $this->setData(self::KEY_LIVE_COVER_PHOTO_REMOTE_URL, $value);
     }
 
     /**

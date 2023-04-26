@@ -8,6 +8,20 @@ namespace Elisa\ProductApi\Api\Data;
 interface EventInterface
 {
     /**
+     * Get animation path
+     *
+     * @return string
+     */
+    public function getAnimationPath(): string;
+
+    /**
+     * Get animation remote url
+     *
+     * @return string
+     */
+    public function getAnimationRemoteUrl(): string;
+
+    /**
      * Get Campaign ID
      *
      * @return string
@@ -50,6 +64,22 @@ interface EventInterface
      * @return string
      */
     public function getEventId(): string;
+
+    /**
+     * Get live cover photo path.
+     *
+     * Will return null if not imported yet.
+     *
+     * @return string|null
+     */
+    public function getLiveCoverPhotoPath(): ?string;
+
+    /**
+     * Get live cover photo remote url
+     *
+     * @return string
+     */
+    public function getLiveCoverPhotoRemoteUrl(): string;
 
     /**
      * Get start timestamp of live video
@@ -101,6 +131,22 @@ interface EventInterface
     public function getTags(): array;
 
     /**
+     * Set animation path
+     *
+     * @param string $value
+     * @return EventInterface
+     */
+    public function setAnimationPath(string $value): EventInterface;
+
+    /**
+     * Set animation remote url
+     *
+     * @param string $value
+     * @return EventInterface
+     */
+    public function setAnimationRemoteUrl(string $value): EventInterface;
+
+    /**
      * Set Campaign ID
      *
      * @param string $value
@@ -147,6 +193,22 @@ interface EventInterface
      * @return EventInterface
      */
     public function setEventId(string $value): EventInterface;
+
+    /**
+     * Set live cover photo path
+     *
+     * @param string $value
+     * @return EventInterface
+     */
+    public function setLiveCoverPhotoPath(string $value): EventInterface;
+
+    /**
+     * Set live cover photo remote url
+     *
+     * @param string $value
+     * @return EventInterface
+     */
+    public function setLiveCoverPhotoRemoteUrl(string $value): EventInterface;
 
     /**
      * Set start timestamp of live video
