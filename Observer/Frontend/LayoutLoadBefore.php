@@ -51,7 +51,7 @@ class LayoutLoadBefore implements ObserverInterface
         $pageUid = $this->config->getOnSitePageUid();
 
         $this->pageConfig->addRemotePageAsset(
-            "https://storage.googleapis.com/elisa-test-cdn.elisa.io/widget-$pageUid.js?ver=0.0.1",
+            "https://widget.cdn.elisa.io/widget-$pageUid.js?ver=0.0.1",
             'js',
             [
                 "src_type" => "url",
