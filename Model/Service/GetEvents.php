@@ -19,7 +19,7 @@ class GetEvents implements GetEventsInterface, StoreLevelServiceInterface
 {
     /** @var Config */
     protected $config;
-    /** @var EventFactory  */
+    /** @var EventFactory */
     protected $eventFactory;
     /** @var CURL */
     protected $httpClient = [];
@@ -79,13 +79,13 @@ class GetEvents implements GetEventsInterface, StoreLevelServiceInterface
             $event = $this->eventFactory->create();
             $event->setEventId($apiEvent['eventId'])
                 ->setCampaignId($apiEvent['campaignId'])
-                ->setStartTimestamp(((int)$apiEvent['eventStartTimestamp'])/1000)
+                ->setStartTimestamp((int)(((int)$apiEvent['eventStartTimestamp']) / 1000))
                 ->setName($apiEvent['eventName'])
                 ->setNameShort((string)$apiEvent['eventNameShort'])
                 ->setPageUid($pageUid)
                 ->setDescription(((string)$apiEvent['description']))
-                ->setDeadlineTimestamp(((int)$apiEvent['deadline'])/1000)
-                ->setLiveStartTimestamp(((int)$apiEvent['liveStartTime'])/1000)
+                ->setDeadlineTimestamp((int)(((int)$apiEvent['deadline']) / 1000))
+                ->setLiveStartTimestamp((int)(((int)$apiEvent['liveStartTime']) / 1000))
                 ->setStatus((string)$apiEvent['currentStatus'])
                 ->setCoverPhotoRemoteUrl((string)$apiEvent['coverPhoto'])
                 ->setTags($apiEvent['tags'] ?? []);
