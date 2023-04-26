@@ -251,7 +251,7 @@ class Event extends Template implements BlockInterface, IdentityInterface
         $override = $mode === 2 ? ' !important' : '';
         $playButtonScale = $this->getPlayButtonScale();
 
-        return "transform: scale($playButtonScale)${override};";
+        return "transform: scale($playButtonScale){$override};";
     }
 
     /**
