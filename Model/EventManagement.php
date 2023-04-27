@@ -11,6 +11,7 @@ use Elisa\ProductApi\Exception\ElisaException;
 use Elisa\ProductApi\Model\Event\ImageImporter;
 use Elisa\ProductApi\Model\ResourceModel\Event as EventResource;
 use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\Webapi\ServiceOutputProcessor;
 use Psr\Log\LoggerInterface;
@@ -70,6 +71,8 @@ class EventManagement implements EventManagementInterface
 
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function refreshEvents(?int $storeId = null)
     {
@@ -83,15 +86,41 @@ class EventManagement implements EventManagementInterface
 
         $events = $this->getEventsService->execute();
         $eventIds = [];
+        $validImages = [];
 
         foreach ($events as $event) {
             $eventIds[] = $event->getEventId();
             $coverPhotoUrl = $event->getCoverPhotoRemoteUrl();
+
+            $event->setCoverPhotoPath('');
+
             try {
-                $path = $this->imageImporter->importImage($coverPhotoUrl, $event->getEventId());
+                $validImages[] = $path = $this->imageImporter->importImage($coverPhotoUrl, $event->getEventId());
                 $event->setCoverPhotoPath($path);
             } catch (ElisaException|FileSystemException $e) {
                 $this->logger->error($e);
+            }
+
+            $event->setAnimationPath('');
+
+            if ($animationUrl = $event->getAnimationRemoteUrl()) {
+                try {
+                    $validImages[] = $path = $this->imageImporter->importImage($animationUrl, $event->getEventId());
+                    $event->setAnimationPath($path);
+                } catch (ElisaException|FileSystemException $e) {
+                    $this->logger->error($e);
+                }
+            }
+
+            $event->setLiveCoverPhotoPath('');
+
+            if ($liveCoverPhotoUrl = $event->getLiveCoverPhotoRemoteUrl()) {
+                try {
+                    $validImages[] = $path = $this->imageImporter->importImage($liveCoverPhotoUrl, $event->getEventId());
+                    $event->setLiveCoverPhotoPath($path);
+                } catch (ElisaException|FileSystemException $e) {
+                    $this->logger->error($e);
+                }
             }
 
             $existingEvent = $this->eventFactory->create();
@@ -114,6 +143,12 @@ class EventManagement implements EventManagementInterface
             } catch (\Exception $e) {
                 $this->logger->error($e);
             }
+        }
+
+        try {
+            $this->imageImporter->cleanup($validImages);
+        } catch (LocalizedException $e) {
+            $this->logger->error($e);
         }
     }
 

@@ -4,53 +4,149 @@
 $events = $block->getEvents();
 ?>
 <?php if ($events): ?>
-    <div class="elisa-events-wrapper<?= $escaper->escapeHtmlAttr($block->getAdditionalClasses()) ?>">
-        <?php if ($title = $block->getTitle()): ?>
+<div class="elisa-events-wrapper<?= $escaper->escapeHtmlAttr($block->getAdditionalClasses()) ?>">
+    <?php if ($title = $block->getTitle()): ?>
         <h2 class="event-widget-title"><?= $escaper->escapeHtml(__($title)) ?></h2>
-        <?php endif; ?>
-        <div class="elisa-events-container">
-            <?php $playButtonLabel = $block->getPlayButtonLabel(); ?>
-            <?php foreach ($events as $event): ?>
-                <div class="elisa-events-single">
-                    <div class="elisa-play-button elisa-play-button-group"
-                         data-elisa-event-id="<?= $escaper->escapeHtmlAttr($event->getEventId()) ?>"
-                         data-elisa-campaign-id="<?= $escaper->escapeHtmlAttr($event->getCampaignId()) ?>"
-                         title="<?= $playButtonLabel ? $escaper->escapeHtmlAttr(__($playButtonLabel)) : '' ?>">
-                        <div class="elisa-image">
-                            <img alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
-                                 src="<?= $escaper->escapeUrl($block->getCoverPhotoUrl($event)) ?>"
-                                 style="<?= /** @noEscape */ $block->getImageInlineStyles() ?>"/>
-                            <?php if ($block->getShowPlayButton($event)): ?>
-                                <div data-elisa-event-id="<?= $escaper->escapeHtmlAttr($event->getEventId()) ?>"
-                                     data-elisa-campaign-id="<?= $escaper->escapeHtmlAttr($event->getCampaignId()) ?>"
-                                     style="<?= /** @noEscape */ $block->getPlayButtonInlineStyles() ?>"
-                                     class="elisa-play-button-wrapper play-button-wrapper play-show-card__button">
-                                    <div class="play-button">
-                                        <button class="play-button-indicator-background">
-                                            <svg width="40%" height="40%" viewBox="0 0 40 40" fill="none"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12,0 L40,20 L40,20 L12,40Z" fill="white"
-                                                      fill-opacity="0.9"></path>
-                                            </svg>
-                                            <?php if ($playButtonLabel): ?>
-                                            <span class="play-button-label">
-                                                <?= $escaper->escapeHtmlAttr(__($playButtonLabel)) ?>
-                                            </span>
-                                            <?php endif; ?>
-                                        </button>
+    <?php endif; ?>
+    <div class="elisa-playlist elisa-events-container<?= $escaper->escapeHtmlAttr($block->getAdditionalContainerClasses()) ?>"
+         data-elisa-playlist-id="<?= $escaper->escapeHtmlAttr($block->getUniqueId()) ?>"
+         data-elisa-playlist-size="<?= count($events) ?>"
+         data-elisa-playlist-title="<?= $escaper->escapeHtmlAttr(__($title)) ?>">
+        <?php $playButtonLabel = $block->getPlayButtonLabel(); ?>
+        <?php $position = 0 ?>
+        <?php foreach ($events as $key => $event): ?>
+        <div class="elisa-playlist-item elisa-events-single <?= $escaper->escapeHtmlAttr($event->getStatus()) ?>"
+             data-elisa-playlist-id="<?= $escaper->escapeHtmlAttr($block->getUniqueId()) ?>"
+             data-elisa-playlist-item-position="<?= $position ?>"
+             data-elisa-playlist-item-campaign-id="<?= $escaper->escapeHtmlAttr($event->getCampaignId()) ?>"
+             data-elisa-playlist-item-animation="<?= $escaper->escapeHtmlAttr($event->getAnimationRemoteUrl()) ?>"
+             data-elisa-playlist-item-event-id="<?= $escaper->escapeHtmlAttr($event->getEventId()) ?>"
+             data-elisa-playlist-item-event-name="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
+             data-elisa-playlist-item-cover-photo="<?= $escaper->escapeHtmlAttr($event->getCoverPhotoRemoteUrl()) ?>"
+             data-elisa-playlist-item-current-status="<?= $escaper->escapeHtmlAttr($event->getStatus()) ?>"
+             data-elisa-playlist-item-live-video-cover="<?= $escaper->escapeHtmlAttr($event->getLiveCoverPhotoRemoteUrl()) ?>"
+             data-elisa-playlist-item-start-timestamp="<?= $escaper->escapeHtmlAttr($event->getStartTimestamp()) ?>">
+
+            <div class="elisa-play-button elisa-play-button-group"
+                 role="button"
+                 tabIndex="0"
+                 data-elisa-campaign-id="<?= $escaper->escapeHtmlAttr($event->getCampaignId()) ?>"
+                 data-elisa-event-id="<?= $escaper->escapeHtmlAttr($event->getEventId()) ?>"
+                 title="<?= $escaper->escapeHtmlAttr($playButtonLabel) ?>">
+                <?php if (!$block->isVideoThumbnailShown() || !$event->getLiveCoverPhotoPath()): ?>
+                <div class="elisa-image">
+                    <img alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
+                         src="<?= $escaper->escapeHtmlAttr($block->getCoverPhotoUrl($event)) ?>"
+                         style="<?= /** @noEscape */ $block->getImageInlineStyles() ?>"/>
+
+                    <?php if ($block->getShowPlayButton($event)): ?>
+                        <div style="<?= /** @noEscape */ $block->getPlayButtonInlineStyles() ?>"
+                             class="elisa-play-button-wrapper">
+                            <div class="play-button">
+                                <button class="play-button-indicator-background">
+                                    <svg width="40%" height="40%" viewBox="0 0 40 40" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12,0 L40,20 L40,20 L12,40Z" fill="white" fill-opacity="0.9"></path>
+                                    </svg>
+                                    <?php if ($playButtonLabel): ?>
+                                        <span class="play-button-label"><?= $escaper->escapeHtml($playButtonLabel) ?></span>
+                                    <?php endif; ?>
+                                </button>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($event->getAnimationPath()): ?>
+                        <div class="animation">
+                            <div class="loader-container"
+                                 style="<?= /** @noEscape */ $block->getLoaderContainerInlineStyles() ?>">
+                                <div class="inner-container"
+                                     style="<?= /** @noEscape */
+                                     $block->getPlayButtonInlineStyles() ?>">
+                                    <span class="loader"></span>
+                                </div>
+                            </div>
+                            <img class="animation-image"
+                                 loading="lazy"
+                                 alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
+                                 src="<?= $escaper->escapeHtmlAttr($block->getAnimationUrl($event)) ?>"
+                                 style="<?= /** @noEscape */ $block->getImageInlineStyles(true) ?>"/>
+                        </div>
+                    <?php endif ?>
+                </div>
+                <?php else: ?>
+                <div class="elisa-image with-thumbnail">
+                    <img alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
+                         src="<?= $escaper->escapeHtmlAttr($block->getCoverPhotoUrl($event)) ?>"
+                         style="<?= /** @noEscape */ $block->getImageInlineStyles() ?>"/>
+
+                    <div class="thumbnail-overlay"></div>
+
+                    <?php if ($block->getShowPlayButton($event)): ?>
+                    <div style="<?= /** @noEscape */ $block->getPlayButtonInlineStyles() ?>"
+                         class="elisa-play-button-wrapper">
+                        <div class="play-button">
+                            <button class="play-button-indicator-background">
+                                <svg width="40%" height="40%" viewBox="0 0 40 40" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12,0 L40,20 L40,20 L12,40Z" fill="white" fill-opacity="0.9"></path>
+                                </svg>
+                                <?php if ($playButtonLabel): ?>
+                                    <span class="play-button-label"><?= $escaper->escapeHtml($playButtonLabel) ?></span>
+                                <?php endif; ?>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="thumbnail-animation">
+                        <img alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
+                             src="<?= $escaper->escapeHtmlAttr($block->getLiveCoverPhotoUrl($event)) ?>"/>
+
+                        <?php if ($block->getShowPlayButton($event)): ?>
+                        <div style="<?= /** @noEscape */ $block->getPlayButtonInlineStyles() ?>"
+                                 class="elisa-play-button-wrapper">
+                                <div class="play-button">
+                                    <button class="play-button-indicator-background">
+                                        <svg width="40%" height="40%" viewBox="0 0 40 40" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12,0 L40,20 L40,20 L12,40Z" fill="white" fill-opacity="0.9"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ($event->getAnimationPath()): ?>
+                        <div class="animation-image-container">
+                            <div class="animation">
+                                <div class="loader-container"
+                                     style="<?= /** @noEscape */ $block->getLoaderContainerInlineStyles() ?>">
+                                    <div class="inner-container">
+                                        <span class="loader"></span>
                                     </div>
                                 </div>
-                            <?php endif; ?>
+                                <img class="animation-image"
+                                     loading="lazy"
+                                     alt="<?= $escaper->escapeHtmlAttr($event->getName()) ?>"
+                                     src="<?= $escaper->escapeHtmlAttr($block->getAnimationUrl($event)) ?>"/>
+                            </div>
                         </div>
-                        <p class="date"><?= $escaper->escapeHtml($block->getStartTime($event)) ?></p>
-                        <h4 class="title"><?= $escaper->escapeHtml($event->getName()) ?></h4>
+                        <?php endif ?>
                     </div>
-                    <?php if ($description = $block->getDescription($event)): ?>
-                        <p class="description"><?= /** @noEscape */
-                            $description ?></p>
-                    <?php endif; ?>
                 </div>
-            <?php endforeach; ?>
+                <?php endif; ?>
+                <?php if ($event->getStartTimestamp()): ?>
+                <p class="date"><?= $escaper->escapeHtml($block->getStartTime($event)) ?></p>
+                <?php endif; ?>
+                <h4 class="title"><?= /* @noEscape  */ $event->getName() ?></h4>
+            </div>
+            <?php if ($description = $block->getDescription($event)): ?>
+            <p class="description"><?= /** @noEscape */ $description ?></p>
+            <?php endif; ?>
         </div>
+            <?php $position++ ?>
+        <?php endforeach; ?>
     </div>
+</div>
 <?php endif; ?>

@@ -1,8 +1,17 @@
-body div.with-strict-default-styles,
-body div.with-strict-default-styles *:not(svg,path),
-body div.with-strict-default-styles :after,
-body div.with-strict-default-styles :before {
-    all: revert !important;
+@keyframes elisaAnimationLoader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+/** default styles **/
+
+body div.with-default-styles {
+    -webkit-tap-highlight-color: transparent;
 }
 
 body div.with-default-styles.elisa-events-wrapper {
@@ -10,19 +19,9 @@ body div.with-default-styles.elisa-events-wrapper {
     padding: 10px 0;
 }
 
-body div.with-strict-default-styles.elisa-events-wrapper {
-    margin: 10px 0 !important;
-    padding: 10px 0 !important;
-}
-
 body div.with-default-styles.elisa-events-wrapper:first-child {
     margin-top: 0;
     padding-top: 0;
-}
-
-body div.with-strict-default-styles.elisa-events-wrapper:first-child {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
 }
 
 body div.with-default-styles.elisa-events-wrapper:last-child {
@@ -30,67 +29,175 @@ body div.with-default-styles.elisa-events-wrapper:last-child {
     padding-bottom: 0;
 }
 
-body div.with-strict-default-styles.elisa-events-wrapper:last-child {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-}
-
-body div.with-default-styles h2 {
+body div.with-default-styles.elisa-events-wrapper h2 {
     font-weight: 600;
     margin: 0 0 10px;
 }
 
-body div.with-strict-default-styles h2 {
-    font-weight: 600 !important;
-    margin: 0 0 10px !important;
-}
-
-body div.with-default-styles > .elisa-events-container {
+body div.with-default-styles .elisa-events-container {
     display: grid;
-    gap: 25px;
-    grid-template-columns: auto auto auto;
-    padding: 10px 0;
-}
-
-body div.with-strict-default-styles > .elisa-events-container {
-    display: grid !important;
-    gap: 25px !important;
-    grid-template-columns: auto auto auto !important;
-    padding: 10px 0 !important;
+    gap: 10px;
+    grid-template-columns: repeat(1, 1fr);
 }
 
 body div.with-default-styles .elisa-image {
     align-items: center;
+    background-color: #fff;
     display: flex;
     justify-content: center;
     line-height: 0;
     position: relative;
 }
 
-body div.with-strict-default-styles .elisa-image {
-    align-items: center !important;
-    display: flex !important;
-    justify-content: center !important;
-    line-height: 0 !important;
-    position: relative !important;
-}
-
 body div.with-default-styles .elisa-image img {
-    width: 100%;
     object-fit: contain;
+    width: 100%;
 }
 
-body div.with-strict-default-styles .elisa-image img {
-    width: 100% !important;
-    object-fit: contain !important;
+body div.with-default-styles .animation {
+    background-color: #0008;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.25s ease;
+    width: 100%;
+}
+
+body div.with-default-styles .with-thumbnail .animation {
+    background-color: #fffc;
+}
+
+body div.with-default-styles .elisa-image.with-thumbnail > .elisa-play-button-wrapper {
+    visibility: hidden;
+    opacity: 0;
+}
+
+body div.with-default-styles .with-thumbnail .thumbnail-animation > .elisa-play-button-wrapper {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.25s, opacity 0.25s linear;
+}
+
+body div.with-default-styles .elisa-play-button-group:active .animation,
+body div.with-default-styles .elisa-play-button-group:focus .animation,
+body div.with-default-styles .elisa-play-button-group:hover .animation {
+    opacity: 1;
+}
+
+body div.with-default-styles .elisa-play-button-group:active .elisa-image.with-thumbnail > .elisa-play-button-wrapper,
+body div.with-default-styles .elisa-play-button-group:focus .elisa-image.with-thumbnail > .elisa-play-button-wrapper,
+body div.with-default-styles .elisa-play-button-group:hover .elisa-image.with-thumbnail > .elisa-play-button-wrapper {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.25s, opacity 0.25s linear;
+}
+
+body div.with-default-styles .elisa-play-button-group:active .thumbnail-animation > .elisa-play-button-wrapper,
+body div.with-default-styles .elisa-play-button-group:focus .thumbnail-animation > .elisa-play-button-wrapper,
+body div.with-default-styles .elisa-play-button-group:hover .thumbnail-animation > .elisa-play-button-wrapper {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body div.with-default-styles .elisa-play-button-group:active .thumbnail-overlay,
+body div.with-default-styles .elisa-play-button-group:focus .thumbnail-overlay,
+body div.with-default-styles .elisa-play-button-group:hover .thumbnail-overlay {
+    display: block;
+}
+
+body div.with-default-styles .thumbnail-animation .animation-image-container,
+body div.with-default-styles .animation .loader-container,
+body div.with-default-styles .animation .loader-container .inner-container {
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+body div.with-default-styles .thumbnail-overlay {
+    background-color: #0008;
+    display: none;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+body div.with-default-styles .animation .loader,
+body div.with-default-styles .thumbnail-animation .loader {
+    animation: elisaAnimationLoader 1s linear infinite;
+    aspect-ratio: 1/1;
+    border-color: #0000 #fff;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 6px;
+    content: " ";
+    height: 40%;
+    position: absolute;
+}
+
+body div.with-default-styles .thumbnail-animation .loader {
+    border-color: #0000 #1d222b;
+    height: 30%;
+}
+
+body div.with-default-styles .animation .animation-image {
+    height: 100%;
+    position: absolute;
+}
+
+body div.with-default-styles .elisa-play-button-group:active .thumbnail-animation,
+body div.with-default-styles .elisa-play-button-group:focus .thumbnail-animation,
+body div.with-default-styles .elisa-play-button-group:hover .thumbnail-animation {
+    height: calc(100% - 12px);
+}
+
+body div.with-default-styles .elisa-play-button-group:active .thumbnail-animation .animation-image-container,
+body div.with-default-styles .elisa-play-button-group:focus .thumbnail-animation .animation-image-container,
+body div.with-default-styles .elisa-play-button-group:hover .thumbnail-animation .animation-image-container {
+    opacity: 1;
+}
+
+body div.with-default-styles .thumbnail-animation {
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    height: 50%;
+    justify-content: center;
+    opacity: 1;
+    position: absolute;
+    right: 0;
+    transition: 0.25s ease;
+    margin: 4px;
+    border: 2px solid white;
+    border-radius: 4px;
+}
+
+body div.with-default-styles .thumbnail-animation .animation-image-container {
+    justify-content: flex-end;
+}
+
+body div.with-default-styles .thumbnail-animation img {
+    height: 100%;
+    object-fit: contain;
+    width: auto;
+}
+
+body div.with-default-styles .thumbnail-animation .animation-image-container {
+    opacity: 0;
 }
 
 body div.with-default-styles .elisa-play-button-group {
     cursor: pointer;
-}
-
-body div.with-strict-default-styles .elisa-play-button-group {
-    cursor: pointer !important;
 }
 
 body div.with-default-styles .elisa-play-button-wrapper {
@@ -100,12 +207,16 @@ body div.with-default-styles .elisa-play-button-wrapper {
     border-radius: 100%;
     cursor: pointer;
     display: flex;
-    height: 60%;
+    height: 40%;
     justify-content: center;
     opacity: 0.8;
     position: absolute;
 }
 
+body div.with-default-styles .elisa-play-button-group:active .elisa-play-button-wrapper,
+body div.with-default-styles .elisa-play-button-wrapper:active,
+body div.with-default-styles .elisa-play-button-group:focus .elisa-play-button-wrapper,
+body div.with-default-styles .elisa-play-button-wrapper:focus,
 body div.with-default-styles .elisa-play-button-group:hover .elisa-play-button-wrapper,
 body div.with-default-styles .elisa-play-button-wrapper:hover {
     opacity: 1;
@@ -119,7 +230,10 @@ body div.with-default-styles .elisa-play-button-wrapper .play-button {
     width: 107%;
 }
 
-body div.with-default-styles .elisa-play-button-wrapper .play-button-indicator-background {
+body
+div.with-default-styles
+.elisa-play-button-wrapper
+.play-button-indicator-background {
     align-items: center;
     aspect-ratio: 1/1;
     background-color: #000c;
@@ -132,10 +246,246 @@ body div.with-default-styles .elisa-play-button-wrapper .play-button-indicator-b
     width: 160%;
 }
 
-body div.with-default-styles .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+body div.with-default-styles .elisa-play-button-wrapper .play-button-label {
     bottom: 10%;
-    color: white;
+    color: #fff;
     position: absolute;
+}
+
+body div.with-default-styles p.date {
+    font-size: 75%;
+    margin: 1em 0;
+}
+
+body div.with-default-styles h4 {
+    font-weight: 700;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    body div.with-default-styles .elisa-events-container.md-2 .elisa-play-button-wrapper .play-button-label {
+        font-size: 2vw;
+    }
+
+    body div.with-default-styles .elisa-events-container.md-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    body div.with-default-styles .elisa-events-container.lg-2 .elisa-play-button-wrapper .play-button-label {
+        font-size: 2vw;
+    }
+
+    body div.with-default-styles .elisa-events-container.lg-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    body div.with-default-styles .elisa-events-container.lg-3 .elisa-play-button-wrapper .play-button-label {
+        font-size: 14px;
+    }
+
+    body div.with-default-styles .elisa-events-container.lg-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/** strict default styles **/
+
+body div.with-strict-default-styles,
+body div.with-strict-default-styles :after,
+body div.with-strict-default-styles :before,
+body div.with-strict-default-styles :not(svg, path, .loader) {
+    all: revert !important;
+}
+
+body div.with-strict-default-styles {
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+body div.with-strict-default-styles.elisa-events-wrapper {
+    margin: 10px 0 !important;
+    padding: 10px 0 !important;
+}
+
+body div.with-strict-default-styles.elisa-events-wrapper:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+body div.with-strict-default-styles.elisa-events-wrapper:last-child {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+body div.with-strict-default-styles.elisa-events-wrapper h2 {
+    font-weight: 600 !important;
+    margin: 0 0 10px !important;
+}
+
+body div.with-strict-default-styles .elisa-events-container {
+    display: grid !important;
+    gap: 10px !important;
+    grid-template-columns: repeat(1, 1fr) !important;
+}
+
+body div.with-strict-default-styles .elisa-image {
+    align-items: center !important;
+    background-color: #fff;
+    display: flex !important;
+    justify-content: center !important;
+    line-height: 0 !important;
+    position: relative !important;
+}
+
+body div.with-strict-default-styles .elisa-image img {
+    object-fit: contain !important;
+    width: 100% !important;
+}
+
+body div.with-strict-default-styles .animation {
+    background-color: #0008 !important;
+    bottom: 0 !important;
+    height: 100% !important;
+    left: 0 !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    transition: 0.25s ease !important;
+    width: 100% !important;
+}
+
+body div.with-strict-default-styles .with-thumbnail .animation {
+    background-color: #fffc !important;
+}
+
+body div.with-strict-default-styles .elisa-image.with-thumbnail > .elisa-play-button-wrapper {
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+body div.with-strict-default-styles .with-thumbnail .thumbnail-animation > .elisa-play-button-wrapper {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: visibility 0.25s, opacity 0.25s linear !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-group:active .animation,
+body div.with-strict-default-styles .elisa-play-button-group:focus .animation,
+body div.with-strict-default-styles .elisa-play-button-group:hover .animation {
+    opacity: 1 !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-group:active .elisa-image.with-thumbnail > .elisa-play-button-wrapper,
+body div.with-strict-default-styles .elisa-play-button-group:focus .elisa-image.with-thumbnail > .elisa-play-button-wrapper,
+body div.with-strict-default-styles .elisa-play-button-group:hover .elisa-image.with-thumbnail > .elisa-play-button-wrapper {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: visibility 0.25s, opacity 0.25s linear !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-group:active .thumbnail-animation > .elisa-play-button-wrapper,
+body div.with-strict-default-styles .elisa-play-button-group:focus .thumbnail-animation > .elisa-play-button-wrapper,
+body div.with-strict-default-styles .elisa-play-button-group:hover .thumbnail-animation > .elisa-play-button-wrapper {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-group:active .thumbnail-overlay,
+body div.with-strict-default-styles .elisa-play-button-group:focus .thumbnail-overlay,
+body div.with-strict-default-styles .elisa-play-button-group:hover .thumbnail-overlay {
+    display: block !important;
+}
+
+body div.with-strict-default-styles .thumbnail-animation .animation-image-container,
+body div.with-strict-default-styles .animation .loader-container,
+body div.with-strict-default-styles .animation .loader-container .inner-container {
+    align-items: center !important;
+    bottom: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    left: 0 !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+}
+
+body div.with-strict-default-styles .thumbnail-overlay {
+    background-color: #0008 !important;
+    display: none !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+}
+
+body div.with-strict-default-styles .animation .loader,
+body div.with-strict-default-styles .thumbnail-animation .loader {
+    animation: elisaAnimationLoader 1s linear infinite !important;
+    aspect-ratio: 1/1 !important;
+    border-color: #0000 #fff !important;
+    border-radius: 50% !important;
+    border-style: solid !important;
+    border-width: 6px !important;
+    content: " " !important;
+    height: 40% !important;
+    position: absolute !important;
+}
+
+body div.with-strict-default-styles .thumbnail-animation .loader {
+    border-color: #0000 #1d222b !important;
+    height: 30% !important;
+}
+
+body div.with-strict-default-styles .animation .animation-image {
+    height: 100% !important;
+    position: absolute !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-group:active .thumbnail-animation,
+body div.with-strict-default-styles .elisa-play-button-group:focus .thumbnail-animation,
+body div.with-strict-default-styles .elisa-play-button-group:hover .thumbnail-animation {
+    height: calc(100% - 12px) !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-group:active .thumbnail-animation .animation-image-container,
+body div.with-strict-default-styles .elisa-play-button-group:focus .thumbnail-animation .animation-image-container,
+body div.with-strict-default-styles .elisa-play-button-group:hover .thumbnail-animation .animation-image-container {
+    opacity: 1 !important;
+}
+
+body div.with-strict-default-styles .thumbnail-animation {
+    align-items: center !important;
+    bottom: 0 !important;
+    display: flex !important;
+    height: 50% !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+    position: absolute !important;
+    right: 0 !important;
+    transition: 0.25s ease !important;
+    margin: 4px !important;
+    border: 2px solid white !important;
+    border-radius: 4px !important;
+}
+
+body div.with-strict-default-styles .thumbnail-animation .animation-image-container {
+    justify-content: flex-end !important;
+}
+
+body div.with-strict-default-styles .thumbnail-animation img {
+    height: 100% !important;
+    object-fit: contain !important;
+    width: auto !important;
+}
+
+body div.with-strict-default-styles .thumbnail-animation .animation-image-container {
+    opacity: 0 !important;
+}
+
+body div.with-strict-default-styles .elisa-play-button-group {
+    cursor: pointer !important;
 }
 
 body div.with-strict-default-styles .elisa-play-button-wrapper {
@@ -145,12 +495,16 @@ body div.with-strict-default-styles .elisa-play-button-wrapper {
     border-radius: 100% !important;
     cursor: pointer !important;
     display: flex !important;
-    height: 60% !important;
+    height: 40% !important;
     justify-content: center !important;
     opacity: 0.8 !important;
     position: absolute !important;
 }
 
+body div.with-strict-default-styles .elisa-play-button-group:active .elisa-play-button-wrapper,
+body div.with-strict-default-styles .elisa-play-button-wrapper:active,
+body div.with-strict-default-styles .elisa-play-button-group:focus .elisa-play-button-wrapper,
+body div.with-strict-default-styles .elisa-play-button-wrapper:focus,
 body div.with-strict-default-styles .elisa-play-button-group:hover .elisa-play-button-wrapper,
 body div.with-strict-default-styles .elisa-play-button-wrapper:hover {
     opacity: 1 !important;
@@ -164,7 +518,10 @@ body div.with-strict-default-styles .elisa-play-button-wrapper .play-button {
     width: 107% !important;
 }
 
-body div.with-strict-default-styles .elisa-play-button-wrapper .play-button-indicator-background {
+body
+div.with-strict-default-styles
+.elisa-play-button-wrapper
+.play-button-indicator-background {
     align-items: center !important;
     aspect-ratio: 1/1 !important;
     background-color: #000c !important;
@@ -177,16 +534,10 @@ body div.with-strict-default-styles .elisa-play-button-wrapper .play-button-indi
     width: 160% !important;
 }
 
-body div.with-strict-default-styles .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+body div.with-strict-default-styles .elisa-play-button-wrapper .play-button-label {
     bottom: 10% !important;
-    color: white !important;
+    color: #fff !important;
     position: absolute !important;
-}
-
-body div.with-default-styles p.date {
-    font-size: 75%;
-    margin-bottom: 1em;
-    margin-top: 1em;
 }
 
 body div.with-strict-default-styles p.date {
@@ -194,71 +545,34 @@ body div.with-strict-default-styles p.date {
     margin: 1em 0;
 }
 
-body div.with-default-styles h4 {
-    font-weight: 700;
-}
-
 body div.with-strict-default-styles h4 {
     font-weight: 700 !important;
 }
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
-    body div.with-default-styles > .elisa-events-container {
-        display: grid;
-        gap: 25px;
-        grid-template-columns: auto;
-        padding: 10px 0;
-    }
-
-    body div.with-strict-default-styles > .elisa-events-container {
-        display: grid !important;
-        gap: 25px !important;
-        grid-template-columns: auto !important;
-        padding: 10px 0 !important;
-    }
-}
-
-@media only screen and (max-width: 768px) {
-    body div.with-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
-        font-size: max(3vw, 18px);
-    }
-
-    body div.with-strict-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
-        font-size: max(3vw, 18px) !important;
-    }
-
-    body div.with-default-styles > .elisa-events-container,
-    body div.with-strict-default-styles > .elisa-events-container {
-        grid-template-columns: repeat(1, 1fr) !important;
-    }
-}
-
-@media only screen and (min-width: 768px) {
-    body div.with-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
-        font-size: 2vw;
-    }
-
-    body div.with-strict-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    body div.with-strict-default-styles .elisa-events-container.md-2 .elisa-play-button-wrapper .play-button-label {
         font-size: 2vw !important;
     }
 
-    body div.with-default-styles > .elisa-events-container,
-    body div.with-strict-default-styles > .elisa-events-container {
+    body div.with-strict-default-styles .elisa-events-container.md-2 {
         grid-template-columns: repeat(2, 1fr) !important;
     }
 }
 
 @media only screen and (min-width: 992px) {
-    body div.with-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
-        font-size: 14px;
+    body div.with-strict-default-styles .elisa-events-container.lg-2 .elisa-play-button-wrapper .play-button-label {
+        font-size: 2vw !important;
     }
 
-    body div.with-strict-default-styles > .elisa-events-container .elisa-play-button-wrapper .play-button-indicator-background .play-button-label {
+    body div.with-strict-default-styles .elisa-events-container.lg-2 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    body div.with-strict-default-styles .elisa-events-container.lg-3 .elisa-play-button-wrapper .play-button-label {
         font-size: 14px !important;
     }
 
-    body div.with-default-styles > .elisa-events-container,
-    body div.with-strict-default-styles > .elisa-events-container {
+    body div.with-strict-default-styles .elisa-events-container.lg-3 {
         grid-template-columns: repeat(3, 1fr) !important;
     }
 }

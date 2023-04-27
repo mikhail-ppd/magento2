@@ -6,6 +6,7 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class EventStatuses implements OptionSourceInterface
 {
+    public const STATUS_CLIP = 'clip';
     public const STATUS_PLANNED = 'planned';
     public const STATUS_LIVE = 'live';
     public const STATUS_VOD = 'vod';
@@ -34,6 +35,11 @@ class EventStatuses implements OptionSourceInterface
             $this->options[] = [
                 'value' => self::STATUS_VOD,
                 'label' => __("Past Event")
+            ];
+
+            $this->options[] = [
+                'value' => self::STATUS_CLIP,
+                'label' => __("Clip")
             ];
         }
 

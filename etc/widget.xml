@@ -91,6 +91,17 @@
                     </option>
                 </options>
             </parameter>
+            <parameter name="show_video_thumbnail" sort_order="65" required="false" xsi:type="select" visible="true">
+                <label>Show Video Thumbnail</label>
+                <options>
+                    <option name="0" value="0" selected="true">
+                        <label>No</label>
+                    </option>
+                    <option name="1" value="1">
+                        <label>Yes</label>
+                    </option>
+                </options>
+            </parameter>
             <parameter name="show_play_button" sort_order="70" required="false" xsi:type="select" visible="true">
                 <label>Show Play Button</label>
                 <options>
@@ -141,7 +152,7 @@
                         Choose Yes if all your cover images are in the same aspect ratio.
                         <br/>Otherwise, choose No.
                         <br/>
-                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.
+                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.</strong>
                     ]]>
                 </description>
                 <options>
@@ -153,13 +164,44 @@
                     </option>
                 </options>
             </parameter>
+            <parameter name="row_items_md" sort_order="92" required="false" xsi:type="select" visible="true">
+                <label>Events per Row on Medium Screen</label>
+                <description>
+                    <![CDATA[<strong style="color:red">Only applies if Elisa Default Styles are chosen above.</strong>]]>
+                </description>
+                <options>
+                    <option name="1" value="1">
+                        <label>1</label>
+                    </option>
+                    <option name="2" value="2" selected="true">
+                        <label>2</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="row_items_lg" sort_order="93" required="false" xsi:type="select" visible="true">
+                <label>Events per Row on Large Screen</label>
+                <description>
+                    <![CDATA[<strong style="color:red">Only applies if Elisa Default Styles are chosen above.</strong>]]>
+                </description>
+                <options>
+                    <option name="1" value="1">
+                        <label>1</label>
+                    </option>
+                    <option name="2" value="2">
+                        <label>2</label>
+                    </option>
+                    <option name="3" value="3" selected="true">
+                        <label>3</label>
+                    </option>
+                </options>
+            </parameter>
             <parameter name="image_height" sort_order="95" required="false" xsi:type="text" visible="true">
                 <label>Image Container Height</label>
                 <description>
                     <![CDATA[
                         Use positive decimal value in pixels to make unequal aspect-ratio appear with same height on frontend.
                         <br/>
-                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.
+                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.</strong>
                     ]]>
                 </description>
                 <depends>
@@ -175,7 +217,7 @@
                         <br/>Use RGBA color format.
                         <br/>See picker <a href="https://rgbacolorpicker.com/" _target="blank">here</a>.
                         <br/>
-                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.
+                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.</strong>
                     ]]>
                 </description>
                 <depends>
@@ -190,7 +232,7 @@
                         Use a positive decimal value to adjust the scale of the play button.
                         <br/>Default is 1.
                         <br/>
-                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.
+                        <br/><strong style="color:red">Only applies if Elisa Default Styles are chosen above.</strong>
                     ]]>
                 </description>
                 <depends>

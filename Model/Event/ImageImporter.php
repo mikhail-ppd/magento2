@@ -69,6 +69,39 @@ class ImageImporter
     }
 
     /**
+     * @param string[] $validPaths
+     * @return void
+     * @throws FileSystemException
+     * @throws LocalizedException
+     */
+    public function cleanup(array $validPaths)
+    {
+        $relativeFolderPath = DIRECTORY_SEPARATOR . 'elisa' . DIRECTORY_SEPARATOR . 'events';
+
+        $absoluteFolderPath = $this->directoryList->getPath(DirectoryList::MEDIA) . $relativeFolderPath;
+
+        if (!$this->fileIo->fileExists($absoluteFolderPath, false)) {
+            $this->fileIo->mkdir($absoluteFolderPath);
+        }
+
+        $files = $this->getDirectoryFiles($absoluteFolderPath);
+
+        foreach ($validPaths as $validPath) {
+            $fileNameParts = explode(DIRECTORY_SEPARATOR, $validPath);
+            $fileName = end($fileNameParts);
+            $existingKey =  array_search($fileName, $files);
+
+            if ($existingKey !== false) {
+                unset($files[$existingKey]);
+            }
+        }
+
+        foreach ($files as $file) {
+            $this->fileIo->rm($absoluteFolderPath . DIRECTORY_SEPARATOR . $file);
+        }
+    }
+
+    /**
      * Returns relative media path for imported image
      *
      * @param string $imageUrl
@@ -76,11 +109,11 @@ class ImageImporter
      * @return string
      * @throws ElisaException
      * @throws FileSystemException
+     * @throws LocalizedException
      */
     public function importImage(string $imageUrl, string $prefix): string
     {
-        $relativeFolderPath = DIRECTORY_SEPARATOR . 'elisa'
-            . DIRECTORY_SEPARATOR . 'events';
+        $relativeFolderPath = DIRECTORY_SEPARATOR . 'elisa' . DIRECTORY_SEPARATOR . 'events';
 
         $absoluteFolderPath = $this->directoryList->getPath(DirectoryList::MEDIA) . $relativeFolderPath;
 
@@ -90,7 +123,7 @@ class ImageImporter
 
         try {
             $uri = \Laminas\Uri\UriFactory::factory($imageUrl);
-        }catch (\Throwable $e) {
+        } catch (\Throwable $e) {
             $uri = \Zend\Uri\UriFactory::factory($imageUrl);
         }
 
@@ -146,6 +179,12 @@ class ImageImporter
     {
         $client = $this->getHttpClient();
         $client->get($url);
+        $status = $client->getStatus();
+
+        if ($status >= 300) {
+            return ['', ''];
+        }
+
         $headers = $client->getHeaders();
         $contentType = $headers['content-type'] ?? '';
         return [$client->getBody(), $contentType];

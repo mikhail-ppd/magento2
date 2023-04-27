@@ -14,7 +14,7 @@ class ElisaException extends LocalizedException
     {
         parent::__construct(
             $phrase,
-            ($cause instanceof \Exception)
+            ($cause instanceof \Exception) || $cause === null
                 ? $cause
                 : new \Exception("Non-Exception Error: " . $cause->getMessage(), $cause->getCode(), $cause),
             $code
