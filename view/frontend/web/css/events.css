@@ -29,14 +29,13 @@ body div.with-default-styles.elisa-events-wrapper:last-child {
     padding-bottom: 0;
 }
 
-body div.with-default-styles h2 {
+body div.with-default-styles.elisa-events-wrapper h2 {
     font-weight: 600;
     margin: 0 0 10px;
 }
 
 body div.with-default-styles .elisa-events-container {
     display: grid;
-    margin: 10px;
     gap: 10px;
     grid-template-columns: repeat(1, 1fr);
 }
@@ -318,14 +317,13 @@ body div.with-strict-default-styles.elisa-events-wrapper:last-child {
     padding-bottom: 0 !important;
 }
 
-body div.with-strict-default-styles h2 {
+body div.with-strict-default-styles.elisa-events-wrapper h2 {
     font-weight: 600 !important;
     margin: 0 0 10px !important;
 }
 
 body div.with-strict-default-styles .elisa-events-container {
     display: grid !important;
-    margin: 10px !important;
     gap: 10px !important;
     grid-template-columns: repeat(1, 1fr) !important;
 }
