@@ -61,9 +61,9 @@ class OrderManagement implements OrderManagementInterface
             "crq.ref_id = cr.id"
         );
 
-        $createdAt = date("Y-m-d H:i:s", $timestamp ?: 0);
+        $updatedAt = date("Y-m-d H:i:s", $timestamp ?: 0);
 
-        $ordersCollection->addFieldToFilter('created_at', ['gt' => $createdAt]);
+        $ordersCollection->addFieldToFilter('updated_at', ['gt' => $updatedAt]);
         $ordersCollection->addFieldToFilter('crq.ref_id', ['notnull' => true]);
         $ordersCollection->getSelect()->group('main_table.entity_id');
 
