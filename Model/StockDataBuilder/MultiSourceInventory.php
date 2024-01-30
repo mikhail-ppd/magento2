@@ -90,15 +90,15 @@ class MultiSourceInventory implements StockDataBuilderInterface
         $stockItemData = $this->getStockItemData->execute($product->getSku(), $stockId);
 
         $stockData->setSalable(
-            $stockItemData ? $stockItemData[GetStockItemDataInterface::IS_SALABLE] : false
+            $stockItemData ? (bool)$stockItemData[GetStockItemDataInterface::IS_SALABLE] : false
         );
 
         if ($elisaProduct->isProductTypeWithQty()) {
             $stockData->setQty(
-                $stockItemData ? $stockItemData[GetStockItemDataInterface::QUANTITY] : 0
+                $stockItemData ? (float)$stockItemData[GetStockItemDataInterface::QUANTITY] : 0
             );
 
-            $salableQty = $this->getProductSalableQty->execute($product->getSku(), $stockId);
+            $salableQty = (float)$this->getProductSalableQty->execute($product->getSku(), $stockId);
             $stockData->setSalableQty(max($salableQty, 0));
 
             $stockItemConfiguration = $this->getStockItemConfiguration->execute($product->getSku(), $stockId);

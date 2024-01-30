@@ -54,11 +54,11 @@ class Legacy implements StockDataBuilderInterface
         $websiteId = $this->context->getStoreManager()->getWebsite()->getId();
         $stockItem = $this->stockRegistry->getStockItem($product->getId(), $websiteId);
 
-        $stockData->setSalable($stockItem->getIsInStock());
+        $stockData->setSalable((bool)$stockItem->getIsInStock());
 
         if ($elisaProduct->isProductTypeWithQty()) {
-            $stockData->setQty($stockItem->getQty());
-            $stockData->setSalableQty(max($stockItem->getQty() - $stockItem->getMinQty(), 0));
+            $stockData->setQty((float)$stockItem->getQty());
+            $stockData->setSalableQty(max((float)$stockItem->getQty() - (float)$stockItem->getMinQty(), 0));
 
             $stockData->setWithUnlimitedInventory(
                 !$stockItem->getManageStock()
