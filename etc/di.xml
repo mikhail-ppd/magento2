@@ -35,8 +35,7 @@
     <type name="Elisa\ProductApi\Model\CartManagement">
         <arguments>
             <argument name="quoteItemHandlerProvider"
-                      xsi:type="object">Elisa\ProductApi\Api\QuoteItemHandlerProviderInterface\Proxy
-            </argument>
+                      xsi:type="object">Elisa\ProductApi\Api\QuoteItemHandlerProviderInterface\Proxy</argument>
             <argument name="logger" xsi:type="object">Elisa\ProductApi\Model\Logger</argument>
         </arguments>
     </type>
